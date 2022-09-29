@@ -1,0 +1,131 @@
+{% extends 'Accounts/base.html' %}
+{% load static %}
+{% block content %}
+{% load widget_tweaks %}
+
+
+
+        <!-- ...:::: Start Account Dashboard Section:::... -->
+       <div class="account-dashboard">
+            <div class="container mt-5">
+                
+                <div class="row">
+                    {% include 'UserSide/dashbord/user-dashbord-base.html' %}
+                    <div class="col-sm-12 col-md-9 col-lg-9">
+                        <div class="account_login_form">
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <div class="row">                                
+                                    <div class="col-lg-6">
+                                        <div class="default-form-box">
+                                            <label>First Name <span>*</span></label>
+                                            {% render_field form.first_name required="True" %}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="default-form-box">
+                                            <label>Last Name <span>*</span></label>
+                                            {% render_field form.last_name required="True" %}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="default-form-box">
+                                            <label>Phone<span>*</span></label>
+                                            {% render_field form.phone required="True" %}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="default-form-box">
+                                            <label> Email Address <span>*</span></label>
+                                            {% render_field form.email required="True" %}
+                                        </div>
+                                    </div>
+                                    
+            
+                                    <div class="col-6">
+                                        <div class="default-form-box">
+                                            <label>Address Line 1<span>*</span></label>
+                                            {% render_field form.address_line_1 required="True" %}
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="default-form-box">
+                                            <label>Address Line 2<span>*</span></label>
+                                            {% render_field form.address_line_2 %}
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="default-form-box">
+                                            <label>City <span>*</span></label>
+                                            {% render_field form.city required="True" %}
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="default-form-box">
+                                            <label>State<span>*</span></label>
+                                            {% render_field form.state required="True" %}
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="default-form-box">
+                                            <label for="country">country <span>*</span></label>
+                                            {% render_field form.country class="country_option nice-select wide" name="country" id="country" %}
+                                        </div>
+                                    </div>
+    
+    
+                                    <div class="d-flex">
+                                        <div class="order_button pt-3 mt-2">
+                                            <button type="submit" class="btn btn-md btn-primary px-5">SAVE</button>
+                                        </div>
+                                        <div class="order_button ml-3 pt-3 mt-2">
+                                            <a href="{% url 'addresses' %}" class="btn btn-md btn-black-default-hover">CANCEL</a>
+                                        </div>
+                                   </div>
+                                </div>
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- ...:::: End Account Dashboard Section:::... -->
+
+{% include 'UserSide/footer.html' %}
+
+
+     <!-- ::::::::::::::All JS Files here :::::::::::::: -->
+    <!-- Global Vendor, plugins JS -->
+    <script src="{% static 'assets/js/vendor/modernizr-3.11.2.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/jquery-migrate-3.3.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/popper.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/jquery-ui.min.js' %}"></script>
+
+    <!--Plugins JS-->
+    <script src="{% static 'assets/js/plugins/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/material-scrolltop.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.zoom.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/venobox.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.waypoints.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.lineProgressbar.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/aos.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.instagramFeed.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/ajax-mail.js' %}"></script>
+
+    <!-- Use the minified version files listed below for better performance and remove the files listed above -->
+    <!-- <script src="assets/js/vendor/vendor.min.js"></script>
+    <script src="assets/js/plugins/plugins.min.js"></script> -->
+
+    <!-- Main JS -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+</body>
+
+</html>
+
+{% endblock %}

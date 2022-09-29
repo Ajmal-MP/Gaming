@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="zxx">
+
+    
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        
+        <title>HONO - Multi Purpose HTML Template</title>
+        
+        <!-- ::::::::::::::Favicon icon::::::::::::::-->
+        
+    <!-- ::::::::::::::All CSS Files here :::::::::::::: -->
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/ionicons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/simple-line-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/jquery-ui.min.css' %}">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/swiper-bundle.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/venobox.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/jquery.lineProgressbar.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/aos.min.css' %}">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <style>
+            .item {
+    position:relative;
+    padding-top:20px;
+    display:inline-block;
+}
+.notify-badge{
+    position: absolute;
+    right:-20px;
+    top:10px;
+    text-align: center;
+    border-radius: 30px 30px 30px 30px;
+    color:white;
+    padding:5px 10px;
+    font-size:20px;
+}
+    </style>
+
+<style>
+    #progressbar {
+    margin-bottom: 30px;
+    overflow: hidden;
+    color: #455A64;
+    padding-left: 0px;
+    margin-top: 30px
+}
+
+#progressbar li {
+    list-style-type: none;
+    font-size: 13px;
+    width: 33.33%;
+    float: left;
+    position: relative;
+    font-weight: 400;
+    color: #455A64 !important;
+    
+}
+
+#progressbar #step1:before {
+    content: "1";
+    color: #fff;
+    width: 29px;
+    margin-left: 15px !important;
+    padding-left: 11px !important;
+}
+
+
+#progressbar #step2:before {
+    content: "2";
+    color: #fff;
+    width: 29px;
+}
+
+#progressbar #step3:before {
+    content: "3";
+    color: #fff;
+    width: 29px;
+    margin-right: 15px !important;
+    padding-right: 11px !important;
+}
+
+#progressbar li:before {
+    line-height: 29px;
+    display: block;
+    font-size: 12px;
+    background: #455A64 ;
+    border-radius: 50%;
+    margin: auto;
+}
+
+ #progressbar li:after {
+    content: '';
+    width: 121%;
+    height: 2px;
+    background: #455A64;
+    position: absolute;
+    left: 0%;
+    right: 0%;
+    top: 15px;
+    z-index: -1;
+} 
+
+#progressbar li:nth-child(2):after {
+    left: 50%;
+}
+
+#progressbar li:nth-child(1):after {
+    left: 25%;
+    width: 121%;
+}
+#progressbar li:nth-child(3):after {
+    left: 25% !important;
+    width: 50% !important;
+}
+
+#progressbar li.active:before,
+#progressbar li.active:after {
+    background: #4bb8a9; 
+}
+
+</style>
+
+</head>
+
+<body id="total-count">
+    <!-- Start Header Area -->
+    <header class="header-section d-none d-xl-block">
+        <div class="header-wrapper">
+            <div class="header-bottom header-bottom-color--black section-fluid sticky-header sticky-color--black">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 d-flex align-items-center justify-content-between">
+                            <!-- Start Header Logo -->
+                            <div class="header-logo">
+                                <div class="logo">
+                                    <a href="{% url 'home' %}"><img src="{% static 'assets/images/logo/logo_white.png' %}" alt=""></a>
+                                </div>
+                            </div>
+
+                            
+
+
+                            
+                            <div>
+                            </div>
+                            {% if user.is_authenticated %}
+                            <div class="main-menu menu-color--white menu-hover-color--pink ml-auto">
+                                <nav class="">
+                                    <ul>
+                                 
+                                        <li class="has-dropdown">
+                                            <a href="#">Account <i
+                                                    class="fa fa-angle-down"></i></a>
+                                            <!-- Sub Menu -->
+                                            <ul class="sub-menu">
+                                                <li><a href="{% url 'account_detail' %}">Profile Information</a>
+                                                </li>
+                                                <li><a href="{% url 'logout' %}">Log Out</a>
+                                                </li>
+                                            </ul>
+                                        </li>  
+                                    </ul>
+                                </nav>
+                            </div>
+
+
+
+                            {%else%}
+                            <div class="ml-auto main-menu menu-color--white menu-hover-color--pink">
+                                    
+                                    <a href="{% url 'login' %}" class="nav-item nav-link d-inline">Login</a>
+                                    <a href="{% url 'signup' %}" class="nav-item nav-link d-inline">Register</a>
+                            </div>
+                            {%endif%}
+
+                            <div class="mr-3">
+                                    <a class="btn btn-primary btn-sm ml-3" href="{% url 'store' %}" >Store</a> 
+                            </div>
+
+                            <!-- End Header Logo -->
+
+
+                            <!-- Start Header Action Link -->
+                            <ul class="header-action-link action-color--white action-hover-color--pink"> 
+                                <li>
+                                    <a href="{% url 'cart' %}" class="">
+                                        <i class="icon-bag"></i>
+                                        <span class="item-count">{{cart_count}}</span>   
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#search">
+                                        <i class="icon-magnifier"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#offcanvas-about" class="offacnvas offside-about offcanvas-toggle">
+                                        <i class="icon-menu"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                            <!-- End Header Action Link -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Start Header Area -->
+
+
+    <!-- Start Offcanvas Mobile Menu Section -->
+    <div id="offcanvas-about" class="offcanvas offcanvas-rightside offcanvas-mobile-about-section">
+        <!-- Start Offcanvas Header -->
+        <div class="offcanvas-header text-right">
+            <button class="offcanvas-close"><i class="ion-android-close"></i></button>
+        </div> <!-- End Offcanvas Header -->
+        <!-- Start Offcanvas Mobile Menu Wrapper -->
+        <!-- Start Mobile contact Info -->
+        <div class="mobile-contact-info">
+            <div class="logo">
+                <a href="{% url 'home' %}"><img src="{% static  'assets/images/logo/logo_white.png' %}" alt=""></a>
+            </div>
+
+            <ul class="user-link">
+                <li><a href="wishlist.html">Wishlist</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="checkout.html">Checkout</a></li>
+            </ul>
+        </div>
+        <!-- End Mobile contact Info -->
+    </div>
+    <!-- ...:::: End Offcanvas Mobile Menu Section:::... -->
+
+    {% block content %}
+    
+    {% endblock %}
+
+    

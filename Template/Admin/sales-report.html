@@ -1,0 +1,112 @@
+{% extends 'Admin/base.html' %}
+{% load static %}
+{% block content %}
+{% load widget_tweaks %}
+
+<div class="stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Monthly Sales Report</h4>
+        <div class="row">
+          <div class="card card-tale col-6">
+            <div class="card-body">
+              <p class="mb-4">Total Amount</p>
+              <p class="fs-30 mb-2">{{total_payment_amount.amount_paid__sum}}</p>
+            </div>
+          </div>
+          <div class="col-3 ml-auto">
+            <button class="btn btn-md ml-auto btn-primary ml-auto mb-3" onclick="ExportToExcel('xlsx')">Export To Excel</button>
+            <input type="button" class="btn btn-success btn-md  ml-auto" id="btnExport" value="Export To PDF" />
+          </div>
+        </div>
+
+        <div class="table-responsive pt-3">
+        <table class="table table-bordered" id="tbl_exporttable_to_xls">
+            <thead>
+              <tr>
+                <th>
+                  Product Name
+                </th>
+                <th>
+                  Item Selled
+                </th>
+                <th>
+                  In Stock
+                </th>
+
+                <th>
+                  Amounts
+                </th>
+              </tr>
+            </thead>
+            
+            {% for order in orders %}
+            <tbody>
+              <tr class="table-info">
+                <td>
+                  {{order.user_order_page__product__product_name}}
+                </td>
+                <td>
+                  {{order.dcount}}
+                </td>
+                <td>
+                    {{order.user_order_page__product__stock}}  
+                </td>
+                
+                <td>
+                  {{order.total}}
+                </td>
+              </tr>
+            </tbody>
+            {%endfor%}
+          </table>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<!-- script for xel creation -->
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+<script>
+  function ExportToExcel(type, fn, dl) {
+       var elt = document.getElementById('tbl_exporttable_to_xls');
+       var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+       return dl ?
+         XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
+         XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'xlsx')));
+    }
+</script>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+
+<!-- script for for pdf creation -->
+<script type="text/javascript">
+  $("body").on("click", "#btnExport", function () {
+      html2canvas($('#tbl_exporttable_to_xls')[0], {
+          onrendered: function (canvas) {
+              var data = canvas.toDataURL();
+              var docDefinition = {
+                  content: [{
+                      image: data,
+                      width: 500
+                  }]
+              };
+              pdfMake.createPdf(docDefinition).download("customer-details.pdf");
+          }
+      });
+  });
+</script>
+<!-- copy from here -->
+</div>
+<!-- content-wrapper ends -->
+</div>
+<!-- main-panel ends -->
+</body>
+<!-- page-body-wrapper ends -->
+</html>
+<!-- container-scroller -->
+{% endblock %}

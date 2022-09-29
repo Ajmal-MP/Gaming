@@ -1,0 +1,130 @@
+{% extends 'Accounts/base.html' %}
+{% load static %}
+{% block content %}
+{% load widget_tweaks %}
+
+
+
+        <!-- ...:::: Start Account Dashboard Section:::... -->
+       <div class="account-dashboard">
+            <div class="container mt-5">
+                
+                <div class="row">
+                    {% include 'UserSide/dashbord/user-dashbord-base.html' %}
+                    {% if addresses %}
+                    <div class="col-sm-12 col-md-9 col-lg-9">
+                        {% for message in messages %}
+                            <div class="alert alert-success mb-0 alert-dismissible fade show mb-3" role="alert" >
+                                 {{ message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                        <a href="add_address" class="btn btn-primary btn-lg mb-3">New Address</a>
+                        {% for address in addresses %}
+
+                        <div class="card mb-3">
+                            <h5 class="card-header">Address {{forloop.counter}}</h5>    
+                            <div class="d-flex">
+                                <div class="card-body">
+                                    <p class="card-text mb-0">{{address.full_name}}</p>
+                                    <p class="card-text mb-0">{{address.full_address}}</p>
+                                    <p class="card-text mb-0">{{address.city}}, {{order.state}}</p>
+                                    <p class="card-text mb-0">{{address.country}}</p>
+                                    <p class="card-text mb-0">{{address.email}}</p>
+                                    <p class="card-text mb-0">{{address.phone}}</p>
+                                  </div>
+                                  <div>
+                                      <a href="{% url 'update_address' address.id %}" class="btn btn-info btn-sm mx-1">Edit</a>
+                                      <button class="btn btn-danger btn-sm mx-1 text-danger" data-bs-toggle="modal" data-bs-target="#modalAddcart{{address.id}}">Delete</button>
+                                  </div>
+                            </div>
+                            <!-- delete model -->
+                            <div class="modal fade" id="modalAddcart{{address.id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog  modal-dialog-centered modal-xl" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <div class="container-fluid">
+                                                    <div class="row text-center">
+                                                        <div class="col-12 mt-2">
+                                                            <h4 class="mb-3">Are you sure you want to delete this Address?</h4>
+                                                        </div>
+                                                        <div class="col-12 my-5 mx-auto">
+                                                            <a href="{% url 'delete_address' address.id %}" class="btn btn-danger text-danger py-2 px-5 px-5">DELETE</a>
+                                                            <a href="" class="btn btn-primary py-2 px-5 px-5 ml-3" aria-label="Close" data-bs-dismiss="modal">Cancel</a>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- delete model -->                            
+                        </div>
+                        {%endfor%}
+                    </div>
+                    {%else%}
+                    <div class="col-sm-12 col-md-9 col-lg-9">
+                        {% for message in messages %}
+                            <div class="alert alert-success mb-0 alert-dismissible fade show mb-3" role="alert">
+                                 {{ message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                        <div class="card mb-3 text-center align-items-center h-100">
+                            <div class="jumbotron d-flex align-items-center h-100">
+                                <div class="container text-center">
+                                    <h1 class="mb-3">No Addresses found in your account!</h1>
+                                    <span class="d-block mb-3">Add a delivery address.</span>
+                                    <a href="{% url 'add_address' %}" class="btn btn-primary">ADD ADDRESSES</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- ...:::: End Account Dashboard Section:::... -->
+
+{% include 'UserSide/footer.html' %}
+
+
+     <!-- ::::::::::::::All JS Files here :::::::::::::: -->
+    <!-- Global Vendor, plugins JS -->
+    <script src="{% static 'assets/js/vendor/modernizr-3.11.2.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/jquery-migrate-3.3.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/popper.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/jquery-ui.min.js' %}"></script>
+
+    <!--Plugins JS-->
+    <script src="{% static 'assets/js/plugins/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/material-scrolltop.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.zoom.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/venobox.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.waypoints.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.lineProgressbar.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/aos.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.instagramFeed.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/ajax-mail.js' %}"></script>
+
+    <!-- Use the minified version files listed below for better performance and remove the files listed above -->
+    <!-- <script src="assets/js/vendor/vendor.min.js"></script>
+    <script src="assets/js/plugins/plugins.min.js"></script> -->
+
+    <!-- Main JS -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <script src="https://unpkg.com/htmx.org@1.8.0" integrity="sha384-cZuAZ+ZbwkNRnrKi05G/fjBX+azI9DNOkNYysZ0I/X5ZFgsmMiBXgDZof30F5ofc" crossorigin="anonymous"></script>
+</body>
+
+</html>
+
+{% endblock %}

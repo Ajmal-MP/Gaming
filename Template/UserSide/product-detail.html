@@ -1,0 +1,174 @@
+{% extends 'Accounts/base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+    <!-- Start Product Details Section -->
+    <div class="product-details-section mt-5">
+        <div class="container">
+            {% for item in product %}
+            <div class="row">
+                <div class="col-xl-5 col-lg-6">
+                    <div class="product-details-gallery-area product-details-gallery-area-vartical product-details-gallery-area-vartical-left"
+                        data-aos="fade-up" data-aos-delay="0">
+                        <!-- Start Large Image -->
+                        <div class="product-large-image product-large-image-vartical swiper-container ml-5">
+                            <div class="swiper-wrapper">
+                                <div class="product-image-large-image swiper-slide  img-responsive">
+                                    <img src="{{item.product_image_1.url}}" alt="">
+                                </div>
+                                <div class="product-image-large-image swiper-slide zoom-image-hover img-responsive">
+                                    <img src="{{item.product_image_2.url}}" alt="">
+                                </div>
+                                <div class="product-image-large-image swiper-slide zoom-image-hover img-responsive">
+                                    <img src="{{item.product_image_3.url}}" alt="">
+                                </div>
+                                <div class="product-image-large-image swiper-slide zoom-image-hover img-responsive">
+                                    <img src="{{item.product_image_4.url}}" alt="">
+                                </div>
+                                <div class="product-image-large-image swiper-slide zoom-image-hover img-responsive">
+                                    <img src="{{item.product_image_1.url}}" alt="">
+                                </div>
+                                <div class="product-image-large-image swiper-slide zoom-image-hover img-responsive">
+                                    <img src="{{item.product_image_2.url}}" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Large Image -->
+                        <!-- Start Thumbnail Image -->
+                        <div class="product-image-thumb product-image-thumb-vartical swiper-container pos-relative">
+                            <div class="swiper-wrapper">
+                                <div class="product-image-thumb-single swiper-slide">
+                                    <img class="img-fluid" src="{{item.product_image_1.url}}"
+                                        alt="">
+                                </div>
+                                <div class="product-image-thumb-single swiper-slide">
+                                    <img class="img-fluid" src="{{item.product_image_2.url}}"
+                                        alt="">
+                                </div>
+                                <div class="product-image-thumb-single swiper-slide">
+                                    <img class="img-fluid" src="{{item.product_image_3.url}}"
+                                        alt="">
+                                </div>
+                                <div class="product-image-thumb-single swiper-slide">
+                                    <img class="img-fluid" src="{{item.product_image_4.url}}"
+                                        alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Thumbnail Image -->
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-xl-7 col-lg-6">
+                    <div class="product-details-content-area product-details--golden" data-aos="fade-up"
+                        data-aos-delay="200">
+                        <!-- Start  Product Details Text Area-->
+                        <div class="product-details-text">
+                           
+                            <h4 class="title">{{item.product_name}}</h4>
+                            
+                            <div class="d-flex align-items-center">
+                                <ul class="review-star">
+                                    <li class="fill"><i class="ion-android-star"></i></li>
+                                    <li class="fill"><i class="ion-android-star"></i></li>
+                                    <li class="fill"><i class="ion-android-star"></i></li>
+                                    <li class="fill"><i class="ion-android-star"></i></li>
+                                    <li class="empty"><i class="ion-android-star"></i></li>
+                                </ul>
+                                <a href="#" class="customer-review ml-2">(customer review )</a>
+                            </div>
+                            {% if item.offer_price == 0 %}
+                            <div class="price">₹{{item.price}}</div>
+                            {%else%}
+                            <div class="price"><del>₹{{item.price}}</del><span class="ml-3">₹{{item.offer_price}}</span></div>
+                            {%endif%}
+                            <p>{{item.product_description}}</p>
+                        </div>
+                        <!-- End  Product Details Text Area-->
+                        <!-- Start Product Variable Area -->
+                        <div class="product-details-variable">
+                            {% if item.stock <= 10 and item.stock > 0 %}
+                            <h4 class="title">Available Options</h4>
+                            <!-- Product Variable Single Item -->
+                            <div class="variable-single-item">
+                                <div class="product-stock text-danger"> <span class="product-stock-in">
+                                </span>Hurry Up Only <span class="text-dark">{{item.stock}}</span> Left in Stock!</div>
+                                </div>
+                            </div>
+                            {%endif%}
+                            
+
+                            <!-- Product Variable Single Item -->
+                            <!-- <div class="variable-single-item">
+                                <span>Size</span>
+                                <select class="product-variable-size">
+                                    <option selected value="1"> size in option</option>
+                                    <option value="2">s</option>
+                                    <option value="3">m</option>
+                                    <option value="4">l</option>
+                                    <option value="5">xl</option>
+                                    <option value="6">xxl</option>
+                                </select>
+                            </div> -->
+                            <!-- Product Variable Single Item -->
+                            <div class="d-flex align-items-center ">
+                                {% if item.stock <= 0 %}
+                                <h5 class="text-danger">Out of Stock</h5>
+                                {%else%}
+
+                                    <div class="product-add-to-cart-btn">
+                                        <a href="{% url 'add_cart' item.id %}">+ Add To Cart</a>
+                                    </div>
+                                    
+                                {%endif%}
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+    <!-- End Product Details Section -->
+
+    {% include 'UserSide/footer.html' %}
+
+     <!-- ::::::::::::::All JS Files here :::::::::::::: -->
+    <!-- Global Vendor, plugins JS -->
+    <script src="{% static 'assets/js/vendor/modernizr-3.11.2.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/jquery-migrate-3.3.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/popper.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/jquery-ui.min.js' %}"></script>
+
+    <!--Plugins JS-->
+    <script src="{% static 'assets/js/plugins/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/material-scrolltop.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.zoom.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/venobox.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.waypoints.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.lineProgressbar.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/aos.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.instagramFeed.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/ajax-mail.js' %}"></script>
+
+    <!-- Use the minified version files listed below for better performance and remove the files listed above -->
+    <!-- <script src="assets/js/vendor/vendor.min.js"></script>
+    <script src="assets/js/plugins/plugins.min.js"></script> -->
+
+    <!-- Main JS -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+</body>
+
+</html>
+
+{% endblock %}

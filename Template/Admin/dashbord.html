@@ -1,0 +1,256 @@
+{% extends 'Admin/base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+
+<div class="row">
+    <div class="col-md-6 grid-margin stretch-card">
+      <div class="card tale-bg">
+        <div class="card-people mt-auto">
+          <img src="{% static 'images/dashboard/people.svg' %}" alt="people">
+          <div class="weather-info">
+            <div class="d-flex">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 grid-margin transparent">
+      <div class="row">
+        <div class="col-md-6 mb-4 stretch-card transparent">
+          <div class="card card-tale">
+            <div class="card-body">
+              <p class="mb-4">Today’s Orders</p>
+              <p class="fs-30 mb-2">{{order_count_in_day}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-4 stretch-card transparent">
+          <div class="card card-dark-blue">
+            <div class="card-body">
+              <p class="mb-4">This Week Orders</p>
+              <p class="fs-30 mb-2">{{order_count_in_week}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
+          <div class="card card-light-blue">
+            <div class="card-body">
+              <p class="mb-4">This Month Orders</p>
+              <p class="fs-30 mb-2">{{order_count_in_month}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 stretch-card transparent">
+          <div class="card card-light-danger">
+            <div class="card-body">
+              <p class="mb-4">Number of Clients</p>
+              <p class="fs-30 mb-2">{{number_of_users}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card position-relative">
+        <div class="card-body">
+          <div id="detailedReports" class="carousel slide detailed-report-carousel position-static pt-2" data-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="row">
+                  <div class="col-md-12 col-xl-3 d-flex flex-column justify-content-start">
+                    <div class="ml-xl-4 mt-3">
+                    <p class="card-title">Toatal Payed Amount</p>
+                      <h1 class="text-primary h2"> ₹{{total_payment_amount.amount_paid__sum}}</h1>
+                    </div>  
+                    </div>
+                  <div class="col-md-12 col-xl-9">
+                    <div class="row">
+                      <div class="col mt-3">
+                        <canvas id="north-america-chart"></canvas>
+                        <div id="north-america-legend"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title mt-3">Order Details</h4>
+      <canvas id="barChart"></canvas>
+    </div>
+  </div>
+
+  <script src="{% static 'path-to/node_modules/chart.js/dist/Chart.min.js' %}"></script>
+
+  
+
+ <!-- script for payment detail  -->
+  <script>
+        if ($("#north-america-chart").length) {
+      var areaData = {
+        labels: ["PayPal", "RazorPay", "Cash on delivery"],
+        datasets: [{
+            data: ['{{paypal_orders}}','{{razorpay_orders}}','{{cash_on_delivery_count}}'],
+            backgroundColor: [
+               "#4B49AC","#FFC100", "#248AFD",
+            ],
+            borderColor: "rgba(0,0,0,0)"
+          }
+        ]
+      };
+      var areaOptions = {
+        responsive: true,
+        maintainAspectRatio: true,
+        segmentShowStroke: false,
+        cutoutPercentage: 78,
+        elements: {
+          arc: {
+              borderWidth: 10
+          }
+        },      
+        legend: {
+          display: false
+        },
+        tooltips: {
+          enabled: true
+        },
+        legendCallback: function(chart) { 
+          var text = [];
+          text.push('<div class="report-chart">');
+            text.push('<div class="d-flex justify-content-between mx-4 mx-xl-5 mt-3"><div class="d-flex align-items-center"><div class="mr-3" style="width:20px; height:20px; border-radius: 50%; background-color: ' + chart.data.datasets[0].backgroundColor[0] + '"></div><p class="mb-0">PayPal Sales</p></div>');
+            text.push('<p class="mb-0 mr-auto ml-4" style:"margin-left:5px" >{{paypal_orders}}</p>');
+            text.push('</div>');
+            text.push('<div class="d-flex justify-content-between mx-4 mx-xl-5 mt-3"><div class="d-flex align-items-center"><div class="mr-3" style="width:20px; height:20px; border-radius: 50%; background-color: ' + chart.data.datasets[0].backgroundColor[1] + '"></div><p class="mb-0">RazorPay Sales</p></div>');
+            text.push('<p class="mb-0 mr-auto ml-4">{{razorpay_orders}}</p>');
+            text.push('</div>');
+            text.push('<div class="d-flex justify-content-between mx-4 mx-xl-5 mt-3"><div class="d-flex align-items-center"><div class="mr-3" style="width:20px; height:20px; border-radius: 50%; background-color: ' + chart.data.datasets[0].backgroundColor[2] + '"></div><p class="mb-0">Cash On Delivery</p></div>');
+            text.push('<p class="mb-0 mr-auto ml-3">{{cash_on_delivery_count}}</p>');
+            text.push('</div>');
+          text.push('</div>');
+          return text.join("");
+        },
+      }
+      var northAmericaChartPlugins = {
+        beforeDraw: function(chart) {
+          var width = chart.chart.width,
+              height = chart.chart.height,
+              ctx = chart.chart.ctx;
+      
+          ctx.restore();
+          var fontSize = 3.125;
+          ctx.font = "500 " + fontSize + "em sans-serif";
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = "#13381B";
+      
+          var text = "{{total_payment_count}}",
+              textX = Math.round((width - ctx.measureText(text).width) / 2),
+              textY = height / 2;
+      
+          ctx.fillText(text, textX, textY);
+          ctx.save();
+        }
+      }
+      var northAmericaChartCanvas = $("#north-america-chart").get(0).getContext("2d");
+      var northAmericaChart = new Chart(northAmericaChartCanvas, {
+        type: 'doughnut',
+        data: areaData,
+        options: areaOptions,
+        plugins: northAmericaChartPlugins
+      });
+      document.getElementById('north-america-legend').innerHTML = northAmericaChart.generateLegend();
+    }
+  </script>
+
+  <!-- script for shipping detail -->
+
+  <script>
+    
+    var data = {
+    labels: ["Orderd", "Shipped", "Out for delivery", "Completed", ],
+    datasets: [{
+      label: '# of Votes',
+      data: ['{{orderd}}', '{{shipped}}', '{{out_of_delivery}}', '{{completed}}', ],
+      backgroundColor: [
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+      borderColor: [
+        'rgba(54, 162, 235, 1)',
+        'rgba(255,99,132,1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1,
+      fill: false
+    }]
+  };
+  
+  var options = {
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    },
+    legend: {
+      display: false
+    },
+    elements: {
+      point: {
+        radius: 0
+      }
+    }
+
+  };
+  
+  
+
+
+    // Get context with jQuery - using jQuery's .get() method.
+  if ($("#barChart").length) {
+    var barChartCanvas = $("#barChart").get(0).getContext("2d");
+    // This will get the first returned node in the jQuery collection.
+    var barChart = new Chart(barChartCanvas, {
+      type: 'bar',
+      data: data,
+      options: options
+    });
+  }
+
+
+  </script>
+
+<!-- copy from here -->
+</div>
+<!-- content-wrapper ends -->
+</div>
+<!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+{% endblock %}

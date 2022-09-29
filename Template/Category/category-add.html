@@ -1,0 +1,69 @@
+{% extends 'Admin/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+
+
+
+<div class="card-body">
+<form method='POST' action="" enctype="" id="category_add">
+    {% csrf_token %}
+
+  <div class="form-group">
+  <label>Category</label>
+  {% render_field form.category_name name="category_name" id="category_name" placeholder="category" class="form-control" %}
+  </div>
+  <div class="form-group">
+  <label>slug</label>
+  {% render_field form.slug name="slug" id="slug" placeholder="categorys" class="form-control" %}
+  </div>
+
+  <div class="form-group">
+    <label>Offer Price</label>
+    {% render_field form.category_offer class="form-control" %}
+  </div>
+</div>
+<!-- copy from here -->
+<div class="d-flex ml-auto">
+  <a class="btn btn-primary ml-auto mr-2" href="{% url 'category' %}">Cancel</a>
+  <button class="btn btn-success" type="submit">SAVE Category</button>
+</div>
+
+</form>
+</div>
+<!-- content-wrapper ends -->
+</div>
+<!-- main-panel ends -->
+<script>
+  document.getElementById("category_name").onkeyup=function(){
+    document.getElementById("slug").value=document.getElementById("category_name").value.toLowerCase().replaceAll(" ","-");
+  }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="{% static 'js/form-validation.js' %}"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#category_add").validate({
+      rules:{
+        category_offer: {
+          number:true,
+          minlength:0,
+          maxlength:70
+        }
+      },
+      messages :{
+        category_offer:{
+          maxlength:"Offer price should be less than 70%"
+        }
+      }
+    })
+  })
+</script>
+</body>
+<!-- page-body-wrapper ends -->
+</html>
+<!-- container-scroller -->
+{% endblock %}

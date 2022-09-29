@@ -1,0 +1,134 @@
+{% extends 'Accounts/base.html' %}
+{% load static %}
+
+{% block content %}
+{% load widget_tweaks %}
+
+    <!-- ...:::: Start Checkout Section:::... -->
+    <div class="checkout-section">
+        <div class="container pt-5">
+            <!-- Start User Details Checkout Form -->
+            <div class="checkout_form" data-aos="fade-up" data-aos-delay="400">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="card mb-3">
+                            {% if addresses %}
+                            <h5 class="card-header">DELIVERY ADDRESS</h5>
+                            {%endif%}    
+                            {% for item in addresses %}
+                                <div class="card-body form-check row">
+                                    <div class="col-12 d-flex">
+                                        <a
+                                            hx-get="{% url 'checkout_address' item.id %}" 
+                                            hx-trigger="click"
+                                            hx-target="#address_change"
+                                            hx-swap="outerHTML"
+                                        >
+                                            <input class="form-check-input d-block ml-1 mt-1" type="radio" name="flexRadioDefault">
+                                        </a>
+                                        <div class="d-block ml-2">
+                                            <p class="card-text mb-0"><b>{{item.full_name}}</b> ,{{item.address_line_1}},{{item.city}},{{item.state}}</p>
+                                            <p class="cart-text mb-0">{{item.email}}</p>
+                                            <p class="cart-text mb-0">{{item.phone}}</p>
+                                        </div>
+                                        <hr>
+                                    </div>              
+                                </div>                           
+                            {%endfor%}                      
+                        </div>
+                        <form action="{% url 'place_order' %}" method="POST">
+                            {% csrf_token %}
+                            <h3>Billing Details</h3>
+                            {% include 'UserSide/dashbord/checkout-address.html' %}
+                            
+
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                            <h3>Your order</h3>
+                            <div class="order_table table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Image</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    {% for cart_item in cart_items %}
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ cart_item.product.product_name }}<strong> × {{ cart_item.quantity }}</strong></td>
+                                            <td class="product_thumb"><a href="#"><img
+                                                src="{{ cart_item.product.product_image_1.url }}" style="width: 60px; height:30px"
+                                                alt="img"></a>
+                                            </td>
+                                            <td> ₹{{cart_item.sub_total}}</td>
+                                        </tr>
+                                    </tbody>
+                                    {%endfor%}
+                                    <tfoot>
+                                        <tr>
+                                            <th>Cart Subtotal</th>
+                                            <td>₹{{total}}.00</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Delivery charge</th>
+                                            <td><strong>₹{{delivery_charge}}</strong></td>
+                                        </tr>
+                                        <tr class="order_total">
+                                            <th>Order Total</th>
+                                            <td><strong>₹{{grand_total}}.00</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="payment_method">
+                                <div class="order_button pt-3">
+                                    <button class="btn btn-md btn-black-default-hover" type="submit">Proceed to payment</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+             <!-- Start User Details Checkout Form -->
+        </div>
+    </div>
+    <!-- ...:::: End Checkout Section:::... -->
+
+    {% include 'UserSide/footer.html' %}
+
+     <!-- ::::::::::::::All JS Files here :::::::::::::: -->
+    <!-- Global Vendor, plugins JS -->
+    <script src="{% static 'assets/js/vendor/modernizr-3.11.2.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/jquery-migrate-3.3.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/popper.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/jquery-ui.min.js' %}"></script>
+
+    <!--Plugins JS-->
+    <script src="{% static 'assets/js/plugins/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/material-scrolltop.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.zoom.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/venobox.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.waypoints.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.lineProgressbar.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/aos.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.instagramFeed.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/ajax-mail.js' %}"></script>
+
+    <!-- Use the minified version files listed below for better performance and remove the files listed above -->
+    <!-- <script src="assets/js/vendor/vendor.min.js"></script>
+    <script src="assets/js/plugins/plugins.min.js"></script> -->
+
+    <!-- Main JS -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <script src="https://unpkg.com/htmx.org@1.8.0" integrity="sha384-cZuAZ+ZbwkNRnrKi05G/fjBX+azI9DNOkNYysZ0I/X5ZFgsmMiBXgDZof30F5ofc" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
+
+{% endblock %}

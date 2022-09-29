@@ -1,0 +1,282 @@
+{% extends 'Admin/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+
+<div class="card-body" id="mainPage">
+  <div id="alert-box"></div>
+  <div id="image-box" class="mb-3"></div>
+    <form method='POST' action="" enctype="multipart/form-data" id="image-form">
+      {% csrf_token %}
+    
+        <div class="form-group">
+        <label>Product</label>
+        {% render_field form.product_name id="product_name" placeholder="Name" class="form-control" %}
+        </div>
+        <div class="form-group d-none">
+        <label>slug</label>
+        {% render_field form.slug  id="slug" placeholder="slug" class="form-control"   %}
+        </div>
+    
+        <div class="form-group">
+          <label>Brand Name</label>
+          {% render_field form.brand  placeholder="brand" class="form-control" %}
+        </div>
+    
+        <div class="form-group">
+          <label>Price</label>
+          {% render_field form.price type="number" min="0" placeholder="price" class="form-control" %}
+        </div>
+
+        <div class="form-group">
+          <label>Offer Price</label>
+          {% render_field form.product_offer class="form-control" %}
+        </div>
+    
+        <div class="form-group">
+          <label>Imageg 1</label>
+          {% render_field form.product_image_1  required="True" class="form-control" id="id_file" %}
+        </div>
+    
+        <div class="form-group">
+          <label>Imageg 2</label>
+          {% render_field form.product_image_2 required="True" placeholder="brand" class="form-control" %}
+        </div>
+    
+        <div class="form-group">
+          <label>Imageg 3</label>
+          {% render_field form.product_image_3 required="True"  placeholder="brand" class="form-control" %}
+        </div>
+    
+        <div class="form-group">
+          <label>Imageg 4</label>
+          {% render_field form.product_image_4  required="True"  class="form-control" %}
+        </div>
+    
+    
+        <div class="form-group">
+          <label>Discription</label>
+          {% render_field form.product_description required="True" class="form-control" %}
+        </div>
+        
+        <div class="form-group">
+          <label>Category</label>
+          {% render_field form.category_id class="form-control" required="True" %}
+        </div>
+    
+    
+        <div class="form-group">
+          <label>Sub Category</label>
+          {% render_field form.subcategory_id class="form-control" required="True" %}
+        </div>
+    
+        <div class="form-group">
+          <label>Stock</label>
+          {% render_field form.stock class="form-control" %}
+        </div>
+        
+       <div class="form-gorup d-flex">
+          
+          <label class="">Is Active : </label>
+          {% render_field form.is_active class="ml-3" style="width:30px; height:23px" %}
+       </div>
+      
+      </div>
+      <div class="d-flex ml-auto">
+        <a class="btn btn-primary ml-auto mr-2" href="{% url 'product'  %}">Cancel</a>
+        <button class="btn btn-success" type="submit">Save</button>
+      </div>
+      
+      </form>
+      <button class="btn btn-primary mt-3  not-visible" id="confirm-btn">confirm</button>
+  </div>
+  <!-- content-wrapper ends -->
+</div>
+<!-- main-panel ends -->
+
+
+
+
+<div class="modal fade" id="modalCrop">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title">Crop Image</h4>
+              <button type="button" class="close" data-dismiss="modal" id="dismissed">×</button>
+          </div>
+          <div class="modal-body">
+              <img src="" id="image" style="max-width: 100%;">
+          </div>
+          <div class="modal-footer">
+              <div class="btn-group pull-left" role="group">
+                  <button type="button" class="btn btn-default js-zoom-in">
+                      <span class="glyphicon glyphicon-zoom-in"></span>
+                  </button>
+                  <button type="button" class="btn btn-default js-zoom-out">
+                      <span class="glyphicon glyphicon-zoom-out"></span>
+                  </button>
+              </div>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary js-crop-and-upload">Crop and upload</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+<script>
+  document.getElementById("product_name").onkeyup=function(){
+    document.getElementById("slug").value=document.getElementById("product_name").value.toLowerCase().replaceAll(" ","-");
+  }
+</script>
+
+
+<!-- Product add form validation using jquery -->
+
+
+
+
+
+
+
+<!-- jquery form vlaidation -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script type="text/javascript" src="{% static 'js/form-validation.js' %}"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+  $("#image-form").validate({
+    rules:{
+          product_name:{
+                        required:true,
+                        minlength:2
+                        }, 
+          brand:{
+            required:true,
+            minlength:2
+                },
+            
+                price:{
+                  required:true, 
+                },
+                stock:{
+                  min:0
+                },
+                product_description:{
+                  minlength:10
+                }
+          },
+
+
+    messages :{
+              product_name:{
+                            minlength:"Minimum 4 charecter needed",
+                            },
+              brand:{
+                minlength:"Minimum 4 charecter needed",
+              },
+              price:{
+                min:'Price must be posative number'
+              },
+              stock:{
+                min:'Stock must be posative number'
+              },
+              product_description:{
+                minlength:"Minimum 10 charecter needed", 
+              }
+              }
+  })
+})
+
+
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/3.1.3/cropper.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+<script>
+  $(function () {
+
+  /* SCRIPT TO OPEN THE MODAL WITH THE PREVIEW */
+  $("#id_file").change(function () {
+      if (this.files && this.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+          $("#image").attr("src", e.target.result);
+          $("#modalCrop").modal("show");
+      }
+      reader.readAsDataURL(this.files[0]);
+      }
+  });
+
+  /* SCRIPTS TO HANDLE THE CROPPER BOX */
+  var $image = $("#image");
+  var cropBoxData;
+  var canvasData;
+  $("#modalCrop").on("shown.bs.modal", function () {
+      $image.cropper({
+      viewMode: 1,
+      aspectRatio: 1/1,
+      minCropBoxWidth: 200,
+      minCropBoxHeight: 200,
+      ready: function () {
+          $image.cropper("setCanvasData", canvasData);
+          $image.cropper("setCropBoxData", cropBoxData);
+      }
+      });
+  }).on("hidden.bs.modal", function () {
+      cropBoxData = $image.cropper("getCropBoxData");
+      canvasData = $image.cropper("getCanvasData");
+      $image.cropper("destroy");
+
+  });
+
+  $(".js-zoom-in").click(function () {
+      $image.cropper("zoom", 0.1);
+  });
+
+  $(".js-zoom-out").click(function () {
+      $image.cropper("zoom", -0.1);
+  });
+
+  /* SCRIPT TO COLLECT THE DATA AND POST TO THE SERVER */
+  $(".js-crop-and-upload").click(function () {
+      var cropData = $image.cropper("getData");
+      var x = cropData["x"];
+      var y = cropData["y"];
+      var height = cropData["height"];
+      var width = cropData["width"];
+      console.log(x,y,height,width)
+      $('#id_file') = CloudinaryImage("#id_file").resize(
+        crop().width(width).height(height).x(x).y(y)
+        );
+      // $('#id_file').height = height;
+      // $('#id_file').width = width;
+      // $("#id_y").val(cropData["y"]);
+      // $("#id_height").val(cropData["height"]);
+      // $("#id_width").val(cropData["width"]);
+      $('#modalCrop').modal('hide');
+  });
+
+  });
+</script>
+</body>
+<!-- page-body-wrapper ends -->
+</html>
+<!-- container-scroller -->
+{% endblock %}

@@ -1,0 +1,19 @@
+<div class="col-sm-12 col-md-3 col-lg-3">
+    <!-- Nav tabs -->
+    <div class="dashboard_tab_button" data-aos="fade-up" data-aos-delay="0">
+        <ul role="tablist" class="nav flex-column dashboard-list">
+        <li><a href="{% url 'account_detail' %}"
+                class="nav-link btn btn-block btn-md btn-black-default-hover">Account details</a>
+        </li>
+            <li> <a href="{% url 'user_orders' %}"
+                    class="nav-link btn btn-block btn-md btn-black-default-hover">Orders</a></li>
+            <li><a href="{% url 'addresses' %}" 
+                    class="nav-link btn btn-block btn-md btn-black-default-hover">Addresses</a></li>
+
+            <li><a href="{% url 'logout' %}"
+                    class="nav-link btn btn-block btn-md btn-black-default-hover">logout</a></li>
+        </ul>
+    </div>
+</div>
+
+

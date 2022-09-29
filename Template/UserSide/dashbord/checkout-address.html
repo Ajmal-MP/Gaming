@@ -1,0 +1,82 @@
+<div class="row" id="address_change">
+    <div class="col-lg-6">
+        <div class="default-form-box">
+            <label>First Name <span>*</span></label>
+            <input type="text" required="True" name="first_name" value="{{detail.first_name}}" >
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="default-form-box">
+            <label>Last Name <span>*</span></label>
+            <input type="text" required="True" name="last_name" value="{{detail.last_name}}">
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="default-form-box">
+            <label>Phone<span>*</span></label>
+            <input type="text" name="phone" required="True" value="{{detail.phone}}">
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="default-form-box">
+            <label> Email Address <span>*</span></label>
+            <input type="email" name="email"  required="True" value="{{detail.email}}">
+        </div>
+    </div>
+    
+
+    <div class="col-6">
+        <div class="default-form-box">
+            <label>Address Line 1<span>*</span></label>
+            <input value="{{detail.address_line_1}}" type="text" name="address_line_1" required="True" >
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="default-form-box">
+            <label>Address Line 2<span>*</span></label>
+            <input value="{{detail.address_line_2}}" type="text" name="address_line_2">
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="default-form-box">
+            <label>City <span>*</span></label>
+            <input type="text" name="city" value="{{detail.city}}">
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="default-form-box">
+            <label>State<span>*</span></label>
+            <input type="text" name="state" value="{{detail.state}}">
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="default-form-box">
+            <label for="country">country <span>*</span></label>
+            <select class="country_option nice-select wide" name="country" id="country" value="{{detail.country}}">
+                <option value="India">India</option>
+                <option value="Algeria">Algeria</option>
+                <option value="Afghanistan">Afghanistan</option>
+                <option value="Ghana">Ghana</option>
+                <option value="Albania">Albania</option>
+                <option value="Bahrain">Bahrain</option>
+                <option value="Colombia">Colombia</option>
+                <option value="Dominican Republic">Dominican Republic</option>
+            </select>
+        </div>
+    </div>
+    
+    <!-- <div class="col-12">
+        <label class="checkbox-default" for="newShipping" data-bs-toggle="collapse"
+            data-bs-target="#anotherShipping">
+            <input type="checkbox" id="newShipping">
+            <span>Ship to a different address?</span>
+        </label>
+    </div> -->
+    <div class="col-12 mt-3">
+        <div class="order-notes">
+            <label for="order_note">Order Notes</label>
+            <textarea id="order_note"
+                placeholder="Notes about your order, e.g. special notes for delivery." name="order_note"></textarea>
+        </div>
+    </div>
+</div>

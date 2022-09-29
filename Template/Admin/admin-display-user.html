@@ -1,0 +1,114 @@
+{% extends 'Admin/base.html' %}
+{% load static %}
+{% block content %}
+{% load widget_tweaks %}
+
+  {% for message in messages %}
+   <div class="alert alert-{{ message.tags }} mb-0 alert-dismissible fade show" role="alert">
+    <strong>Message: </strong> {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+  </div>  
+  {%endfor%}
+    <!-- Modal -->
+    
+    <div class="grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <p class="card-title mb-0">Categories</p>
+          <div class="table-responsive">
+            <table class="table table-striped table-borderless">
+              <thead>
+                <tr>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Email</th>
+                  <th>Mobile</th>
+                  <th>Block/Un Block</th>
+                </tr>  
+              </thead>
+              <tbody>
+              <tr>
+                {% for object in user %}
+                <td>
+                    {{object.first_name}}
+                </td>
+                <td>{{object.last_name}}</td>
+                <td>{{object.email}}</td>
+                <td>{{object.mobile}}</td>
+                
+                {% if object.is_active %}
+                <td><button class="btn btn-danger"  data-toggle="modal" data-target="#block" >Block</button></td>
+                {%else%}
+                <td><button class="btn btn-primary"  data-toggle="modal" data-target="#unblock" >Un Block</button></td>
+                {%endif%}
+                <!-- Block Modal -->
+                
+                <div class="modal fade" id="block" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="block">Modal title</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          Do you want to block  "{{object.first_name}}"
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <form action="{% url 'user_block' id=object.id  flag=1 %}" method="POST">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-primary">Block</button>
+                        </div>
+                      </form>
+                      </div>
+                    </div>
+                </div>
+
+
+
+               <!-- UnBlock Modal -->
+                <div class="modal fade" id="unblock" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="unblock">Modal title</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          Do you want to Unblock  "{{object.first_name}}"
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <form action="{% url 'user_block' id=object.id  flag=0 %}" method="POST">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-primary">Un Block</button>
+                        </div>
+                      </form>
+                      </div>
+                    </div>
+                </div>
+
+              </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- copy from here -->
+</div>
+<!-- content-wrapper ends -->
+</div>
+<!-- main-panel ends -->
+</body>
+<!-- page-body-wrapper ends -->
+</html>
+<!-- container-scroller -->
+{% endblock %}
