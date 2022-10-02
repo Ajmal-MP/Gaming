@@ -1,16 +1,20 @@
 from concurrent.futures.process import _python_exit
+from multiprocessing import context
 from django.shortcuts import render,redirect
 from Cart.models import CartItem
 from Product.models import Product
 from .forms import OrderForm
-from .models import Address, Order, OrderProduct, Payment
+from .models import Address, Order, OrderProduct, Payment,Coupon
 import datetime 
 import json
 from django.http import JsonResponse
-from .forms import AdminChangeOrderStatus
+from .forms import CouponForm
 from django.core.paginator import Paginator
 import razorpay
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
+
 # Create your views here.
 
 client = razorpay.Client(auth=('rzp_test_N4hXBlIPwM654C', 'lFsBhsm8tCgLlSEhUX4BDH0a'))
@@ -37,66 +41,47 @@ def place_order(request,total=0,quantity=0):
 
 
     if request.method == 'POST':
-        form = OrderForm(request.POST)
-
-        if form.is_valid():
-            # store  the billing informations
-            data = Order()
-            #address detail 
-            detail = Address()
-            detail.user = data.user = request.user
-            detail.first_name = data.first_name = form.cleaned_data['first_name']
-            detail.last_name = data.last_name = form.cleaned_data['last_name']
-            detail.phone = data.phone = form.cleaned_data['phone']
-            detail.email = data.email = form.cleaned_data['email']
-            detail.address_line_1 = data.address_line_1 = form.cleaned_data['address_line_1']
-            detail.address_line_2 = data.address_line_2 = form.cleaned_data['address_line_2']
-            detail.country = data.country = form.cleaned_data['country']
-            detail.state = data.state = form.cleaned_data['state']
-            detail.city = data.city = form.cleaned_data['city']
-            data.order_note = form.cleaned_data['order_note']
-            data.order_total = grand_total
-            data.delivery_charge = delivery_charge
-            data.ip = request.META.get('REMOTE_ADDR')
-            data.save()
-            try:
-                ans =Address.objects.filter(user = request.user,
-                 last_name = detail.last_name,
-                 first_name=detail.first_name,
-                 phone = detail.phone,
-                 email = detail.email,
-                 address_line_1=detail.address_line_1,
-                 address_line_2=detail.address_line_2,
-                 country=detail.country,
-                 state=detail.state,
-                 city=detail.city,
-                 ).exist()
-                print(ans)
-            except:
-                pass
-            # detail.save()
+        id = request.POST['flexRadioDefault']
+        address  = Address.objects.get(user = request.user,id = id)
+        print(address.first_name)
+        data = Order()
+        data.user = request.user
+        data.first_name = address.first_name
+        data.last_name = address.last_name
+        data.phone = address.phone
+        data.email = address.email
+        data.address_line_1 = address.address_line_1
+        data.address_line_2 = address.address_line_2
+        data.country = address.country
+        data.state = address.state
+        data.city = address.city
+        data.order_total = grand_total
+        data.delivery_charge = delivery_charge
+        data.is_ordered = False
+        data.ip = request.META.get('REMOTE_ADDR')
+        data.save()
 
 
-            #code for generating order
-            yr = int(datetime.date.today().strftime('%Y'))
-            dt = int(datetime.date.today().strftime('%d'))
-            mt = int(datetime.date.today().strftime('%m'))
-            d = datetime.date(yr,mt,dt)
-            current_date = d.strftime("%Y%m%d") 
-            order_number = current_date + str(data.id)
-            data.order_number = order_number
-            data.save()
+        #code for generating order
+        yr = int(datetime.date.today().strftime('%Y'))
+        dt = int(datetime.date.today().strftime('%d'))
+        mt = int(datetime.date.today().strftime('%m'))
+        d = datetime.date(yr,mt,dt)
+        current_date = d.strftime("%Y%m%d") 
+        order_number = current_date + str(data.id)
+        data.order_number = order_number
+        data.save()
 
-            order = Order.objects.get(user = user, is_ordered = False, order_number = order_number)          
-            context={
-                'order':order,
-                'cart_items':cart_items,
-                'total':total,
-                'grand_total':grand_total,
-                'delivery_charge':delivery_charge,
-                'product_order_number':order_number
-            }
-            return render(request,'UserSide/payment.html',context)    
+        order = Order.objects.get(user = user, is_ordered = False, order_number = order_number)          
+        context={
+            'order':order,
+            'cart_items':cart_items,
+            'total':total,
+            'grand_total':grand_total,
+            'delivery_charge':delivery_charge,
+            'product_order_number':order_number
+        }
+        return render(request,'UserSide/payment.html',context)    
     else:
         return redirect('checkout')
 
@@ -109,6 +94,7 @@ def payments(request):
     payment = Payment(
         user = request.user,
         payment_id = body['transID'],
+        order_number = order.order_number,
         payment_method = body['paymode'],
         amount_paid = order.order_total,
         status = True
@@ -210,6 +196,7 @@ def cash_on_delivery(request,id):
         payment = Payment(
             user = request.user,
             payment_id = order.order_number,
+            order_number = order.order_number,
             payment_method = 'Cash On Delivery', 
             amount_paid = order.order_total,
             status = False
@@ -288,7 +275,7 @@ def cancel_order(request,id):
     order = Order.objects.get(order_number = id,user = request.user)
     order.status = "Cancelled"
     order.save()
-    payment = Payment.objects.get(payment_id = order.order_number)
+    payment = Payment.objects.get(order_number = order.order_number)
     payment.delete()
     return redirect('user_orders')
 
@@ -299,3 +286,76 @@ def return_order(request,id):
     payment = Payment.objects.get(payment_id = order.order_number)
     payment.delete()
     return redirect('user_orders')
+
+
+
+
+def coupon(request):
+    if request.method == 'POST':
+        grand_total = request.POST.get('grand_total')
+        coupon = request.POST.get('coupon')
+        coupon_perc = 0
+        try:
+            instance = Coupon.objects.get( code = coupon)
+
+            if int(grand_total) >= int(instance.min_value):
+                grand_total = int(grand_total) - ((int(grand_total) * int(instance.discount))/100)
+                coupon_perc = instance.discount
+                msg = 'Applied coupon successfully'
+            else:
+                msg='This coupon only applicable for more than '+ str(instance.min_value)+ 'rupee only!'
+        except:
+            msg = 'Coupon is not valid'
+        response = {
+                         'grand_total': grand_total,
+                         'msg':msg,
+                         'coupon_perc':coupon_perc
+            }
+        return JsonResponse(response)
+
+
+def admin_display_coupon(request):
+    coupons = Coupon.objects.all()
+    print(coupons)
+    context = {
+        'coupons': coupons  
+    }
+    return render(request, 'admin/admin_display_coupon.html', context)
+
+
+def admin_add_coupon(request):
+    if request.method == 'POST':
+        form = CouponForm(request.POST , request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Coupon Added successfully')
+            return redirect(admin_display_coupon)
+        else:
+            print(form.errors.as_data()) 
+            messages.error(request, 'Error adding coupon')
+            return redirect(admin_display_coupon)
+    form = CouponForm()
+    context = { 
+        'form':form,
+    }
+    return render(request,'Admin/admin-add-coupon.html',context)
+
+def coupon_delete(request,id):
+    if request.method == 'POST' :
+        coupon = Coupon.objects.get(id=id)
+        coupon.delete()
+        messages.success(request, 'Coupon deleted successfully')
+    return redirect(admin_display_coupon)
+
+#admin update producr
+def coupon_update(request, id) :
+    category = Coupon.objects.get(id=id)
+    if request.method == 'POST' :
+        form = CouponForm(request.POST, request.FILES, instance=category)   
+        if form.is_valid() :
+            form.save()
+            messages.success(request,'Coupon Updated success fully ')
+            return redirect(admin_display_coupon)    
+    form = CouponForm(instance=category)
+    context = {'form' : form}
+    return render(request, 'Admin/admin-add-coupon.html', context)  

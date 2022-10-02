@@ -12,4 +12,9 @@ urlpatterns = [
  path("cash_on_delivery/<int:id>",cash_on_delivery,name='cash_on_delivery'),
  path("cancel_order/<int:id>",cancel_order,name='cancel_order'),
  path("return_order/<int:id>",return_order,name='return_order'),
+ path('coupon',coupon,name="coupon"),
+ path('coupon_add',admin_add_coupon,name='admin_add_coupon'),
+ path('admin_display_coupon',admin_display_coupon,name='admin_display_coupon'),
+ path("coupon_delete/<int:id>",coupon_delete,name='coupon_delete'),
+ path("coupon_update/<int:id>",coupon_update,name='coupon_update'),
 ]

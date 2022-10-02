@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from Accounts.form import AddAddress
 from Order.models import Address
 from Accounts.models import Account
+from Order.models import Coupon
 # Create your views here.
 
 
@@ -135,19 +136,6 @@ def _cart_id(request):
 
 @login_required(login_url='login')
 def checkout(request,total=0, quantity=0, cart_items=None):
-    try:
-        address=Address.objects.filter(user = request.user)[:1].get()
-    except:
-        address = Address()
-        user_detail=Account.objects.get(id = request.user.id)
-        address.first_name = user_detail.first_name
-        address.last_name = user_detail.last_name
-        address.phone = user_detail.mobile
-        address.email = user_detail.email
-        address.save()
-
-
-
     addresses = Address.objects.filter(user  = request.user)
     try:
         if request.user.is_authenticated:   
@@ -161,12 +149,10 @@ def checkout(request,total=0, quantity=0, cart_items=None):
 
     except ObjectDoesNotExist:
         pass
-
     context = { 
         'total':total,
         'quantity':quantity,
         'cart_items':cart_items, 
-        'detail':address,
         'addresses':addresses,
         'delivery_charge':delivery_charge,
         'grand_total' : grand_total

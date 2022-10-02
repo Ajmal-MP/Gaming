@@ -6,8 +6,6 @@
 
     <!-- ...:::: Start Cart Section:::... -->
     <div class="cart-section my-5">
-        
-
         <!-- Start Coupon Start -->
         <div class="coupon_area">
             <div class="container">
@@ -70,11 +68,39 @@
                                     </div>
                                 </div>
                             </div>
+
+
+
+                                <!-- Start Coupon Start -->
+                            <div class="coupon_area mb-5" id="coupon_container">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="coupon_code left" data-aos="fade-up" data-aos-delay="200">
+                                                <h3>Coupon</h3>
+                                                <div class="coupon_inner">
+                                                    <p>Enter your coupon code if you have one.</p>
+                                                    <div id="output" class="my-2 text-danger" >
+                                                    </div>
+                                                    <form id="coupon_form" method="POST">
+                                                        {% csrf_token %}
+                                                        <input class="mb-2" placeholder="Coupon code" type="text"
+                                                            name="coupon_data" id="coupon_data"
+                                                        >
+                                                        <button  class="btn btn-md btn-golden" type="submit">Apply coupon</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                    
+                                    </div>
+                                </div>
+                            </div> <!-- End Coupon Start -->  
                         </div>
 
 
                     </div>
-                    <div class="col-lg-5 col-md-6 ml-auto">
+                    <div class="col-lg-5 col-md-6 ml-auto" id="amount-caontainer">
                         <div class="coupon_code right" data-aos="fade-up" data-aos-delay="400">
                             <h3>Cart Totals</h3>
                             <div class="coupon_inner">
@@ -87,10 +113,16 @@
                                     <p class="cart_amount"> ₹{{delivery_charge}}</p>
                                 </div>
 
+                                <div class="cart_subtotal" id="coupon_block" style="display: none!important;">
+                                    <p>Coupon</p>
+                                    <p class="cart_amount"> - <b id="coupon_perc"></b>%</p>
+                                </div>
+
                                 <div class="cart_subtotal">
                                     <p>Total</p>
-                                    <p class="cart_amount">₹{{grand_total}}.00</p>
+                                    <p class="cart_amount">₹<b id="grand_total">{{grand_total}}</b>.00</p>
                                 </div>
+
                                 <div class="container-fluid">
                                         <div class="row">
                                             <button  class="btn ml-3 mb-4 col-11 btn-golden" style="height: 44px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -167,7 +199,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
   <script type="text/javascript" src="{% static 'js/form-validation.js' %}"></script>
   <!-- Replace "test" with your own sandbox Business account app client ID -->
-  
   
   
   
@@ -332,7 +363,43 @@ function sample(response){
 </script>
 
 
-
+<script>
+    $('#coupon_form').on('submit', function(e){
+             
+             e.preventDefault();
+             
+               $.ajax({
+                    type : "POST", 
+                    url: "{% url 'coupon' %}",
+                    data: {
+                        coupon : $('#coupon_data').val(),
+                        grand_total : '{{grand_total}}',
+                     csrfmiddlewaretoken: '{{ csrf_token }}',
+                     dataType: "json",
+             
+                    },
+                    
+                    success: function(data){
+                       $('#output').html(data.msg) /* response message */
+                       $('#amount-caontainer #grand_total').text(data.grand_total)
+                       $('#amount-caontainer #coupon_perc').text(data.coupon_perc)
+                       if (data.coupon_perc > 0) {
+                           $('#amount-caontainer #coupon_block').show()
+                           $('#coupon_container').hide()
+                       }
+                       
+                    },
+             
+                    failure: function() {
+                        
+                    }
+             
+             
+                });
+             
+             
+                     });    
+</script>
 
 
 </body>

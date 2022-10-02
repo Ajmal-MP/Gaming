@@ -2,11 +2,13 @@ from itertools import product
 from django.db import models
 from Accounts.models import Account
 from Product.models import Product
+from django.core.validators import MinValueValidator,MaxValueValidator
 # Create your models here.
 
 class Payment(models.Model):
     user           = models.ForeignKey(Account, on_delete=models.CASCADE)
     payment_id     = models.CharField(max_length=100)
+    order_number   =models.IntegerField()
     payment_method = models.CharField(max_length=100)
     amount_paid    = models.CharField(max_length=100)
     status         = models.BooleanField()
@@ -21,8 +23,7 @@ class Order(models.Model):
         ('Shipped',"Shipped"),
         ('Out for delivery',"Out for delivery"),
         ('Completed', 'Completed'),
-        ('Cancelled','Cancelled'),
-        ('Returned', 'Returned')
+        ('Cancelled','Cancelled')
     )
     user = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True,related_name='order_payment')
@@ -80,3 +81,15 @@ class Address(models.Model):
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
+
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=50)
+    discount = models.IntegerField(validators = [MinValueValidator(0),MaxValueValidator(20)])
+    min_value = models.IntegerField(validators = [MinValueValidator(0)])
+    valid_from = models.DateTimeField(auto_now_add=True)
+    valid_at = models.DateField()
+    active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.code

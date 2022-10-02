@@ -95,24 +95,15 @@
                                                                 </div>
                                                                 {%endfor%}
                                                             </div>
-                                                            <div class="col-md-8">
-                                                                <div class="row d-flex justify-content-center">
-                                                                    <div class="col">
-                                                                        <ul id="progressbar" >
-                                                                            <li class="step0 active " id="step1">PLACED</li>
-                                                                            <li class="step0 active text-center" id="step2">SHIPPED</li>
-                                                                            <li class="step0  text-muted text-right" id="step3">DELIVERED</li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-5 modal-border">
                                                         <span style="font-size:16px ;" class="text-dark" >Ordered to:</span><br>
                                                         {{order.full_name}} | {{order.phone}} <br>
                                                         <span style="font-size:22px ;" class="text-dark" >Total price: &nbsp;</span>₹{{order.order_total}} <br>
-                                                        <span style="font-size:16px ;" class="text-dark" >Ordered status:</span> {{order.status}}
+                                                        <span style="font-size:16px ;" class="text-dark" >Ordered status:</span> {{order.status}} <br>
+                                                        <span style="font-size:16px ;" class="text-dark" >Invoice:</span> <p id="invoice" class="d-inline">{{order.order_number}}</p> <br>
+                                                        
                                                         {% if order.status == "Order Confirmed" or order.status == "Shipped" or order.status == "Out for delivery"  %}
                                                         <button class="btn btn-danger text-danger mt-3" data-bs-toggle="modal"
                                                         data-bs-target="#cancelOrder{{order.id}}">Cancel Order</button>
@@ -120,6 +111,9 @@
                                                         <button class="btn btn-danger text-danger mt-3" data-bs-toggle="modal"
                                                         data-bs-target="#return_order{{order.id}}">Return Order</button>
                                                         {%endif%}
+                                                        <div  class="btn btn-primary mt-3 ml-1">
+                                                        <input type="button" id="btnExport" value="Download Invoice" />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -230,8 +224,30 @@
     <!-- <script src="assets/js/vendor/vendor.min.js"></script>
     <script src="assets/js/plugins/plugins.min.js"></script> -->
 
+
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <!-- script for for pdf creation -->
     <!-- Main JS -->
     <script src="{% static 'assets/js/main.js' %}"></script>
+    <script type="text/javascript">
+        $("body").on("click", "#btnExport", function () {
+            html2canvas($('#invoice')[0], {
+                onrendered: function (canvas) {
+                    var data = canvas.toDataURL();
+                    var docDefinition = {
+                        content: [{
+                            image: data,
+                            width: 500
+                        }]
+                    };
+                    pdfMake.createPdf(docDefinition).download("customer-details.pdf");
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

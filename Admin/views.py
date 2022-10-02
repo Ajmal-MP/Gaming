@@ -58,7 +58,7 @@ def user_block(request,id,flag):
 def sales_report(request):
     today = datetime.today()
     month = today.month
-    orders = Order.objects.filter(created_at__month=month).values('user_order_page__product__product_name','user_order_page__product__stock',total = Sum('order_total'),).annotate(dcount=Sum('user_order_page__quantity')).order_by()
+    orders = Order.objects.filter(created_at__month=month,payment__status = True).values('user_order_page__product__product_name','user_order_page__product__stock',total = Sum('order_total'),).annotate(dcount=Sum('user_order_page__quantity')).order_by()
     total_payment_amount = Payment.objects.filter(status = True,created_at__month=month).aggregate(Sum('amount_paid'))
     print(total_payment_amount)
     context = {
@@ -71,7 +71,7 @@ def sales_report(request):
 def year_sales_report(request):
     year = datetime.now().year
     print(year)
-    orders = Order.objects.filter(created_at__year=year).values('user_order_page__product__product_name','user_order_page__product__stock',total = Sum('order_total'),).annotate(dcount=Sum('user_order_page__quantity')).order_by()
+    orders = Order.objects.filter(created_at__year=year,payment__status = True).values('user_order_page__product__product_name','user_order_page__product__stock',total = Sum('order_total'),).annotate(dcount=Sum('user_order_page__quantity')).order_by()
     total_payment_amount = Payment.objects.filter(status = True,created_at__year=year).aggregate(Sum('amount_paid'))
     context = {
         'orders':orders,

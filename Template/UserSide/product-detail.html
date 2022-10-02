@@ -82,10 +82,13 @@
                                 </ul>
                                 <a href="#" class="customer-review ml-2">(customer review )</a>
                             </div>
-                            {% if item.offer_price == 0 %}
-                            <div class="price">₹{{item.price}}</div>
-                            {%else%}
+
+
+
+                            {% if item.offer_price != item.price %}
                             <div class="price"><del>₹{{item.price}}</del><span class="ml-3">₹{{item.offer_price}}</span></div>
+                            {%else%}
+                            <div class="price">₹{{item.price}}</div>
                             {%endif%}
                             <p>{{item.product_description}}</p>
                         </div>

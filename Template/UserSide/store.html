@@ -195,13 +195,13 @@
                                                         <div class="content-left">
                                                             <h6 class="title"><a href="{{product.get_url}}">{{product.product_name}}</a></h6>
                                                         </div>
-                                                        {% if product.offer_price == 0 %}
+                                                        {% if product.offer_price != product.price %}
                                                         <div class="content-right">
-                                                            <span class="price">₹{{product.price}}</span>
+                                                        <span class="price"><del>₹{{product.price}}</del>₹{{product.offer_price}}</span>
                                                         </div>
                                                         {%else%}
                                                         <div class="content-right">
-                                                            <span class="price"><del>₹{{product.price}}</del>₹{{product.offer_price}}</span>
+                                                        <span class="price">₹{{product.price}}</span>
                                                         </div>
                                                         {%endif%}
             

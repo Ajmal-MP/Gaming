@@ -15,11 +15,16 @@
                         <h1>Order confirmed</h1>
                         <h4>Your item will be delivered soon</h4>
                         <h3 class="text-danger">Thank you for your purchase!!</h3>
-                        <h4>Your tracking number is : 
+                        <h4 id="invoice">Your tracking number is : 
                             
                                 {{orders.order_number}}
 
                         </h4>
+                        <div class="row py-3 d-flex justify-content-center">
+                            <div class="col-4">
+                                <input type="button" class="btn btn-success btn-sm  ml-auto" id="btnExport" value="Download Invoice" />
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <div class="card text-left">
                                <div class="card-body">
@@ -71,6 +76,12 @@
     <!-- Main JS -->
     <script src="{% static 'assets/js/main.js' %}"></script>
     <script src="https://unpkg.com/htmx.org@1.8.0" integrity="sha384-cZuAZ+ZbwkNRnrKi05G/fjBX+azI9DNOkNYysZ0I/X5ZFgsmMiBXgDZof30F5ofc" crossorigin="anonymous"></script>
+
+
+
+    
+
+
 </body>
 
 </html>
