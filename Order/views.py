@@ -4,7 +4,7 @@ from django.shortcuts import render,redirect
 from Cart.models import CartItem
 from Product.models import Product
 from .forms import OrderForm
-from .models import Address, Order, OrderProduct, Payment,Coupon
+from .models import Address, Order, OrderProduct, Payment,Coupon,UserCoupon
 import datetime 
 import json
 from django.http import JsonResponse
@@ -43,7 +43,6 @@ def place_order(request,total=0,quantity=0):
     if request.method == 'POST':
         id = request.POST['flexRadioDefault']
         address  = Address.objects.get(user = request.user,id = id)
-        print(address.first_name)
         data = Order()
         data.user = request.user
         data.first_name = address.first_name
@@ -72,6 +71,22 @@ def place_order(request,total=0,quantity=0):
         data.order_number = order_number
         data.save()
 
+
+        
+        coupons = Coupon.objects.filter(active = True)
+
+        for item in coupons:
+            try:
+                coupon = UserCoupon.objects.get(user = request.user,coupone = item)
+            except:
+                coupon = UserCoupon()
+                coupon.user = request.user
+                coupon.coupone = item
+                coupon.order = data
+                coupon.save() 
+
+
+        coupons = UserCoupon.objects.filter(used = False , user = request.user)
         order = Order.objects.get(user = user, is_ordered = False, order_number = order_number)          
         context={
             'order':order,
@@ -79,7 +94,8 @@ def place_order(request,total=0,quantity=0):
             'total':total,
             'grand_total':grand_total,
             'delivery_charge':delivery_charge,
-            'product_order_number':order_number
+            'product_order_number':order_number,
+            'coupons':coupons
         }
         return render(request,'UserSide/payment.html',context)    
     else:
@@ -201,7 +217,10 @@ def cash_on_delivery(request,id):
             amount_paid = order.order_total,
             status = False
         )
+
         payment.save()
+        order.payment = payment
+        order.is_ordered = True
         order.save()
         for cart_item in cart_items:
             order_product =  OrderProduct()
@@ -222,7 +241,8 @@ def cash_on_delivery(request,id):
             CartItem.objects.filter(user = request.user).delete()
             #send order number and Transaction id to Web page using 
             context ={
-            'orders':order
+            'orders':order,
+            'payment':payment
              }
             return render(request,'UserSide/cash-delivery-success.html',context)
     except:
@@ -231,16 +251,20 @@ def cash_on_delivery(request,id):
 
 #order management
 
-def user_orders(requst):
-    orders = Order.objects.filter(user = requst.user, is_ordered = True)
+def user_orders(request):
+    orders = Order.objects.filter(user = request.user, is_ordered = True)
+    paginator = Paginator(orders, 8)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
-        'orders' : orders
+        'orders' : orders,
+        'page_obj': page_obj
     }
-    return render(requst,'UserSide/dashbord/user-order-detail.html',context)
+    return render(request,'UserSide/dashbord/user-order-detail.html',context)
 
 
 def admin_orders_list(request):
-    orders = Order.objects.all().order_by('-created_at')
+    orders = Order.objects.filter(is_ordered = True).order_by('-created_at')
     paginator = Paginator(orders, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -296,14 +320,18 @@ def coupon(request):
         coupon = request.POST.get('coupon')
         coupon_perc = 0
         try:
-            instance = Coupon.objects.get( code = coupon)
-
-            if int(grand_total) >= int(instance.min_value):
-                grand_total = int(grand_total) - ((int(grand_total) * int(instance.discount))/100)
-                coupon_perc = instance.discount
+            instance = UserCoupon.objects.get(user = request.user ,coupone__code = coupon)
+            order = Order.objects.get(user = request.user,order_coupon__coupone = instance.coupone)
+            if int(grand_total) >= int(instance.coupone.min_value):
+                grand_total = int(grand_total) - ((int(grand_total) * int(instance.coupone.discount))/100)
+                coupon_perc = instance.coupone.discount
                 msg = 'Applied coupon successfully'
+                instance.used = True
+                order.order_total = grand_total
+                order.save()
+                instance.save()
             else:
-                msg='This coupon only applicable for more than '+ str(instance.min_value)+ 'rupee only!'
+                msg='This coupon only applicable for more than '+ str(instance.coupone.min_value)+ 'rupee only!'
         except:
             msg = 'Coupon is not valid'
         response = {
@@ -316,9 +344,13 @@ def coupon(request):
 
 def admin_display_coupon(request):
     coupons = Coupon.objects.all()
+    paginator = Paginator(coupons, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     print(coupons)
     context = {
-        'coupons': coupons  
+        'coupons': coupons,
+        'page_obj' : page_obj
     }
     return render(request, 'admin/admin_display_coupon.html', context)
 
@@ -359,3 +391,4 @@ def coupon_update(request, id) :
     form = CouponForm(instance=category)
     context = {'form' : form}
     return render(request, 'Admin/admin-add-coupon.html', context)  
+

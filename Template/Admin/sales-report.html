@@ -10,8 +10,20 @@
         <div class="row">
           <div class="card card-tale col-6">
             <div class="card-body">
-              <p class="mb-4">Total Amount</p>
-              <p class="fs-30 mb-2">{{total_payment_amount.amount_paid__sum}}</p>
+              <p class="mb-4">Based On Date</p>
+              <form action="{% url 'sales_report' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-control bg-transparent border border-0">
+                  <label for="" class="h5">Starting Date : </label>
+                  <input type="date" id="start_date" name="start_date" required="True">
+                </div>
+                <div class="form-control bg-transparent border-0">
+                  <label for="" class="h5">Ending Date : </label>
+                <input type="date" id="end_date" name="end_date" required="True">
+                </div>
+                <button class="btn btn-success btn-sm mt-2 ml-3 px-4" type="submit">Filter</button>
+              </form>
+              
             </div>
           </div>
           <div class="col-3 ml-auto">

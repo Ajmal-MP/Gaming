@@ -72,7 +72,7 @@
 
 
                                 <!-- Start Coupon Start -->
-                            <div class="coupon_area mb-5" id="coupon_container">
+                            <div class="coupon_area" id="coupon_container">
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -91,6 +91,67 @@
                                                     </form>
                                                 </div>
                                             </div>
+                                        </div>
+                                        
+                                        <div class="col-md-12 mt-3">
+                                            <h3 class="text-success"> Availabel Coupons:</h3>
+                                            <div class="faq-accordian">
+                                                {% for item in coupons %}
+                                                {% if forloop.counter == 1 %}
+                                                <div class="faq-accordian-single-item" data-aos="fade-up" data-aos-delay="0">
+                                                    <input id="item-1" name="accordian-item" type="radio" checked="">
+                                                    <label for="item-1">{{item.coupone.discount}}% OFF</label>
+                                                    <div class="item-content">
+                                                        <p><b>*</b>Applicable only  for order price more than {{item.coupone.min_value}}</p>
+                                                        <div class="d-flex mb-3">
+                                                        <span class="h4 text-success mt-2 ml-5 mr-2">Coupon Code : </span>
+                                                        <div class="code text-center mr-2" style="text-transform: uppercase;
+                                                            padding: 4px;
+                                                            background-color: #fff;
+                                                            color: red;
+                                                            margin-top: 5px;
+                                                            font-size: 19px;
+                                                            padding-right: 57px;">
+
+                                                        <span class="text-center">{{item.coupone.code}}</span>
+                                                        </div>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-clipboard mt-2" viewBox="0 0 16 16">
+                                                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                                                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                                                          </svg>
+                                                          </div>
+                                                    </div>
+                                                </div>
+                                                {%else%}
+                                                <div class="faq-accordian-single-item" data-aos="fade-up" data-aos-delay="200">
+                                                    <input id="item-2" name="accordian-item" type="radio">
+                                                    <label for="item-2">{{item.coupone.discount}}% OFF</label>
+                                                    <div class="item-content">
+                                                        <p><b>*</b>Applicable only  for order price more than {{item.coupone.min_value}}</p>
+                                                        <div class="d-flex mb-3">
+                                                        <span class="h4 text-success mt-2 ml-5 mr-2">Coupon Code : </span>
+                                                        <div class="code text-center mr-2" style="text-transform: uppercase;
+                                                            padding: 4px;
+                                                            background-color: #fff;
+                                                            color: red;
+                                                            margin-top: 5px;
+                                                            font-size: 19px;
+                                                            padding-right: 57px;">
+
+                                                        <span class="text-center">{{item.coupone.code}}</span>
+                                                        </div>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-clipboard mt-2" viewBox="0 0 16 16">
+                                                            <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                                                            <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                                                          </svg>
+                                                          </div>
+                                                    </div>
+                                                </div>
+                                                {%endif%}
+                                                {%endfor%}
+                                                
+                                            </div>
+
                                         </div>
                     
                                     </div>
@@ -281,16 +342,11 @@
 <!-- Razer pay -->
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-
-
-
-
-    var orderID = "{{order.order_number}}"
-    var csrftoken = getCookie('csrftoken');
-    var redirect_url = "{% url 'payments_completed' %}"
-   var url1 = "{% url 'razor_pay' %}";
-  var url = "{% url 'payments' %}"
-  console.log(url1)
+var orderID = "{{order.order_number}}"
+var csrftoken = getCookie('csrftoken');
+var redirect_url = "{% url 'payments_completed' %}"
+var url1 = "{% url 'razor_pay' %}";
+var url = "{% url 'payments' %}"
 function sample(response){
     // var payment_method = response.payment.payment_method
   var options = {

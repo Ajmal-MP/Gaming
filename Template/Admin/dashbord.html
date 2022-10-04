@@ -6,18 +6,7 @@
 
 
 <div class="row">
-    <div class="col-md-6 grid-margin stretch-card">
-      <div class="card tale-bg">
-        <div class="card-people mt-auto">
-          <img src="{% static 'images/dashboard/people.svg' %}" alt="people">
-          <div class="weather-info">
-            <div class="d-flex">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6 grid-margin transparent">
+    <div class="col-md-12 grid-margin transparent">
       <div class="row">
         <div class="col-md-6 mb-4 stretch-card transparent">
           <div class="card card-tale">
@@ -57,32 +46,31 @@
     </div>
   </div>
 
+  
 
   <div class="row">
     <div class="col-md-12 grid-margin stretch-card">
       <div class="card position-relative">
         <div class="card-body">
           <div id="detailedReports" class="carousel slide detailed-report-carousel position-static pt-2" data-ride="carousel">
-            <div class="carousel-inner">
-              <div class="carousel-item active">
                 <div class="row">
-                  <div class="col-md-12 col-xl-3 d-flex flex-column justify-content-start">
-                    <div class="ml-xl-4 mt-3">
-                    <p class="card-title">Toatal Payed Amount</p>
-                      <h1 class="text-primary h2"> ₹{{total_payment_amount.amount_paid__sum}}</h1>
-                    </div>  
-                    </div>
-                  <div class="col-md-12 col-xl-9">
+                  <div class="col-md-12 col-xl-3 d-flex flex-column justify-content-start">  
+                  </div>
+                  <div class="col-md-12">
                     <div class="row">
-                      <div class="col mt-3">
+                      <div class="col-md-5 mt-3 border-right">
+                        <p class="card-title">Toatal Payed Amount</p>
+                        <h1 class="text-primary h2"> ₹{{total_payment_amount.amount_paid__sum}}</h1>
                         <canvas id="north-america-chart"></canvas>
                         <div id="north-america-legend"></div>
+                      </div>
+                      <div class="col-md-7">
+                            <h4 class="mt-5 mt-md-3">Order Details</h4>
+                              <canvas id="barChart" class="mt-5"></canvas>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -90,12 +78,35 @@
   </div>
 
 
-  <div class="card">
-    <div class="card-body">
-      <h4 class="card-title mt-3">Order Details</h4>
-      <canvas id="barChart"></canvas>
+
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card position-relative">
+        <div class="card-body">
+          <div id="detailedReports" class="carousel slide detailed-report-carousel position-static pt-2" data-ride="carousel">
+                <div class="row">
+                  <div class="col-md-12 col-xl-3 d-flex flex-column justify-content-start">  
+                  </div>
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div class="col-md-6 mt-3 border-right">
+                        <h4 class="card-title">Blocked/Unblocked Users </h4>
+                        <canvas id="doughnutChart"></canvas>
+                      </div>
+                      <div class="col-md-6">
+                        
+                          <h4 class="card-title">Sales</h4>
+                          <canvas id="lineChart"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
 
   <script src="{% static 'path-to/node_modules/chart.js/dist/Chart.min.js' %}"></script>
 
@@ -204,10 +215,118 @@
         'rgba(255, 159, 64, 1)'
       ],
       borderWidth: 1,
+      fill: true
+    }]
+    };
+  
+    var options = {
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    },
+    legend: {
+      display: false
+    },
+    elements: {
+      point: {
+        radius: 0
+      }
+    }
+
+    };
+  
+  
+
+
+    // Get context with jQuery - using jQuery's .get() method.
+    if ($("#barChart").length) {
+    var barChartCanvas = $("#barChart").get(0).getContext("2d");
+    // This will get the first returned node in the jQuery collection.
+    var barChart = new Chart(barChartCanvas, {
+      type: 'bar',
+      data: data,
+      options: options
+    });
+    }
+
+
+  </script>
+
+ <script>
+      var doughnutPieData = {
+    datasets: [{
+      data: ['{{blocked_user}}', '{{unblockd_user}}'],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.5)',
+        'rgba(54, 162, 235, 0.5)',
+        'rgba(255, 206, 86, 0.5)',
+        'rgba(75, 192, 192, 0.5)',
+        'rgba(153, 102, 255, 0.5)',
+        'rgba(255, 159, 64, 0.5)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+    }],
+
+    // These labels appear in the legend and in the tooltips when hovering different arcs
+    labels: [
+      'Blocked Users',
+      'Unblocked Users',
+    ]
+  };
+  var doughnutPieOptions = {
+    responsive: true,
+    animation: {
+      animateScale: true,
+      animateRotate: true
+    }
+  };
+    if ($("#doughnutChart").length) {
+    var doughnutChartCanvas = $("#doughnutChart").get(0).getContext("2d");
+    var doughnutChart = new Chart(doughnutChartCanvas, {
+      type: 'doughnut',
+      data: doughnutPieData,
+      options: doughnutPieOptions
+    });
+  }
+ </script>
+
+ <script>
+    var data = {
+    labels: ["{{day_5_name}}", "{{day_4_name}}", "{{day_3_name}}", "{{day_2_name}}", "{{yesterday}}","{{today}}"],
+    datasets: [{
+      label: '# Sales',
+      data: ['{{day_5}}', '{{day_4}}', '{{day_3}}', '{{day_2}}', '{{yester_day_sale}}', '{{today_sale}}'],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1,
       fill: false
     }]
   };
-  
+
   var options = {
     scales: {
       yAxes: [{
@@ -226,23 +345,17 @@
     }
 
   };
-  
-  
 
-
-    // Get context with jQuery - using jQuery's .get() method.
-  if ($("#barChart").length) {
-    var barChartCanvas = $("#barChart").get(0).getContext("2d");
-    // This will get the first returned node in the jQuery collection.
-    var barChart = new Chart(barChartCanvas, {
-      type: 'bar',
+  if ($("#lineChart").length) {
+    var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
+    var lineChart = new Chart(lineChartCanvas, {
+      type: 'line',
       data: data,
       options: options
     });
   }
+ </script>
 
-
-  </script>
 
 <!-- copy from here -->
 </div>

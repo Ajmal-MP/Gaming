@@ -14,177 +14,173 @@
     <!-- Modal -->
 
 
-    <div class="col-lg-12 grid-margin stretch-card">
-      <div class="card">
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>
-                    Number
-                  </th>
-                  <th>
-                    Name
-                  </th>
-                  <th>
-                    Email
-                  </th>
-                  <th>
-                    Amount
-                  </th>
-                  <th>
-                    Tracking id
-                  </th>
-                  <th>
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for order in page_obj %}
-                <tr>
-                  <td class=" text-center">
-                    {{forloop.counter}}
-                  </td>
-                  <td>
-                    {{order.full_name}}
-                  </td>
-                  <td>
-                    {{order.email}}
-                  </td>
-                  <td>
-                    {{order.order_total}}
-                  </td>
-                  <td>
-                    {{order.order_number}}
-                  </td>
-                  <td>
-                    {{order.status}}
-                  </td>
-                  <td>
-                    {% if order.status == 'Completed' %}
-                    <label class="badge badge-success">Deliverd</label>
-                    {% elif order.status == 'Cancelled' %}
-                    {%else%}
-                    <label class="badge badge-warning" type="button"  data-toggle="modal" data-target="#myModal{{order.id}}" id="Modal_button">Change</button>
-                    {%endif%}
-                  </td>
-                </tr>
-
-
-                <div class="container d-flex justify-content-center">
-    
-                  <!-- The Modal -->
-                  <div class="modal fade" id="myModal{{order.id}}">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                      
-                        <!-- Modal Header -->
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        
-                        <!-- Modal body -->
-                        <div class="modal-body mb-0 pb-0 mt-0">
-                        <div class="container ">
-                            <!-- custom radio button -->
-                            <div class="holder">
-                                <div class="row mb-1">
-                                <div class="col">
-                                <h2>Change Status</h2>
-                                </div>
+    <div class="col-lg-12 bg-light">
+      <div style="height: 716px;">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>
+                Number
+              </th>
+              <th>
+                Name
+              </th>
+              <th>
+                Email
+              </th>
+              <th>
+                Amount
+              </th>
+              <th>
+                Tracking id
+              </th>
+              <th>
+                Status
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in page_obj %}
+            <tr>
+              <td class=" text-center">
+                {{forloop.counter}}
+              </td>
+              <td>
+                {{order.full_name}}
+              </td>
+              <td>
+                {{order.email}}
+              </td>
+              <td>
+                {{order.order_total}}
+              </td>
+              <td>
+                {{order.order_number}}
+              </td>
+              <td>
+                {{order.status}}
+              </td>
+              <td>
+                {% if order.status == 'Completed' %}
+                <label class="badge badge-success">Deliverd</label>
+                {% elif order.status == 'Cancelled' %}
+                {%else%}
+                <label class="badge badge-warning" type="button"  data-toggle="modal" data-target="#myModal{{order.id}}" id="Modal_button">Change</button>
+                {%endif%}
+              </td>
+            </tr>
+  
+  
+            <div class="container d-flex justify-content-center">
+  
+              <!-- The Modal -->
+              <div class="modal fade" id="myModal{{order.id}}">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                  
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    
+                    <!-- Modal body -->
+                    <div class="modal-body mb-0 pb-0 mt-0">
+                    <div class="container ">
+                        <!-- custom radio button -->
+                        <div class="holder">
+                            <div class="row mb-1">
+                            <div class="col">
+                            <h2>Change Status</h2>
                             </div>
-                            <form action="{% url 'update_admin_order' order.id %}" method="POST">
-                                {% csrf_token %}
-                                <div class="row mb-0">
-                                <div class="row justify-content-start">
-                                    <div class="col-12">
-                                  {% if order.status == 'Order Confirmed' %}
-                                        <div class="row">
-                                            <input type="radio" name="status" id="dreamweaver" value="Order Confirmed"  checked>
-                                            <label for="dreamweaver">Order Confirmed</label>
-                                        </div>
-                                        <div class="row">
-                                            <input type="radio" name="status" id="sublime" value="Shipped">
-                                            <label for="sublime">Shipped</label>
-                                        </div>
-                                        <div class="row">
-                                          <input type="radio" name="status" id="sublime" value="Out for delivery">
-                                          <label for="sublime">Out of delivery</label>
-                                      </div>
-                                      <div class="row">
-                                        <input type="radio" name="status" id="sublime" value="Completed">
-                                        <label for="sublime">Completed</label>
-                                      </div>
-                                  {% elif order.status == 'Shipped' %}
-                                      <div class="row">
-                                        <input type="radio" name="status" id="dreamweaver" disabled checked>
+                        </div>
+                        <form action="{% url 'update_admin_order' order.id %}" method="POST">
+                            {% csrf_token %}
+                            <div class="row mb-0">
+                            <div class="row justify-content-start">
+                                <div class="col-12">
+                              {% if order.status == 'Order Confirmed' %}
+                                    <div class="row">
+                                        <input type="radio" name="status" id="dreamweaver" value="Order Confirmed"  checked>
                                         <label for="dreamweaver">Order Confirmed</label>
                                     </div>
                                     <div class="row">
-                                        <input type="radio" name="status" id="sublime" value="Shipped" checked>
+                                        <input type="radio" name="status" id="sublime" value="Shipped">
                                         <label for="sublime">Shipped</label>
                                     </div>
                                     <div class="row">
                                       <input type="radio" name="status" id="sublime" value="Out for delivery">
                                       <label for="sublime">Out of delivery</label>
-                                    </div>
-                                    <div class="row">
+                                  </div>
+                                  <div class="row">
                                     <input type="radio" name="status" id="sublime" value="Completed">
                                     <label for="sublime">Completed</label>
-                                    </div>
-                                    {% elif order.status == 'Out for delivery' %}
-                                            <div class="row">
-                                              <input type="radio" name="status" id="dreamweaver" value="Order Confirmed" disabled checked>
-                                              <label for="dreamweaver">Order Confirmed</label>
-                                          </div>
-                                          <div class="row">
-                                              <input type="radio" name="status" id="sublime" value="Shipped" disabled checked>
-                                              <label for="sublime">Shipped</label>
-                                          </div>
-                                          <div class="row">
-                                            <input type="radio" name="status" id="sublime" value="Out for delivery"  checked>
-                                            <label for="sublime">Out of delivery</label>
-                                          </div>
-                                          <div class="row">
-                                          <input type="radio" name="status" id="sublime" value="Completed">
-                                          <label for="sublime">Completed</label>
-                                          </div>
-                                      {%else%}
-                                      <h1>There is some problem </h1>
-                                  {%endif%}
-
-
-                                    </div>
+                                  </div>
+                              {% elif order.status == 'Shipped' %}
+                                  <div class="row">
+                                    <input type="radio" name="status" id="dreamweaver" disabled checked>
+                                    <label for="dreamweaver">Order Confirmed</label>
                                 </div>
+                                <div class="row">
+                                    <input type="radio" name="status" id="sublime" value="Shipped" checked>
+                                    <label for="sublime">Shipped</label>
                                 </div>
-                                <div class="row mt-4">
+                                <div class="row">
+                                  <input type="radio" name="status" id="sublime" value="Out for delivery">
+                                  <label for="sublime">Out of delivery</label>
                                 </div>
-                            </div>  
+                                <div class="row">
+                                <input type="radio" name="status" id="sublime" value="Completed">
+                                <label for="sublime">Completed</label>
+                                </div>
+                                {% elif order.status == 'Out for delivery' %}
+                                        <div class="row">
+                                          <input type="radio" name="status" id="dreamweaver" value="Order Confirmed" disabled checked>
+                                          <label for="dreamweaver">Order Confirmed</label>
+                                      </div>
+                                      <div class="row">
+                                          <input type="radio" name="status" id="sublime" value="Shipped" disabled checked>
+                                          <label for="sublime">Shipped</label>
+                                      </div>
+                                      <div class="row">
+                                        <input type="radio" name="status" id="sublime" value="Out for delivery"  checked>
+                                        <label for="sublime">Out of delivery</label>
+                                      </div>
+                                      <div class="row">
+                                      <input type="radio" name="status" id="sublime" value="Completed">
+                                      <label for="sublime">Completed</label>
+                                      </div>
+                                  {%else%}
+                                  <h1>There is some problem </h1>
+                              {%endif%}
+  
+  
+                                </div>
                             </div>
+                            </div>
+                            <div class="row mt-4">
+                            </div>
+                        </div>  
                         </div>
-                        
-                        <!-- Modal footer -->
-                        <div class="modal-footer pt-0 mt-0 pb-5 pr-6 m-1 ">
-                           <div class="col-2 justify-content-end ">
-                              <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> -->
-                              <button type="button" class="btn btn-outline-light modal_footer mr-4"  data-dismiss="modal">Cancel</button>
-                           </div>
-                           <div class="col-2 justify-content-start m-0 p-0">
-                              <button type="submit" class="btn btn-success box-shadow--16dp ml-3">OK</button> 
-                           </form>
-                            </div>  
-                        </div> 
-                      </div>
                     </div>
-                  </div> 
+                    
+                    <!-- Modal footer -->
+                    <div class="modal-footer pt-0 mt-0 pb-5 pr-6 m-1 ">
+                       <div class="col-2 justify-content-end ">
+                          <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> -->
+                          <button type="button" class="btn btn-outline-light modal_footer mr-4"  data-dismiss="modal">Cancel</button>
+                       </div>
+                       <div class="col-2 justify-content-start m-0 p-0">
+                          <button type="submit" class="btn btn-success box-shadow--16dp ml-3">OK</button> 
+                       </form>
+                        </div>  
+                    </div> 
+                  </div>
                 </div>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </div>
+              </div> 
+            </div>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -194,8 +190,8 @@
     <div class="pagination">
       <span class="step-links">
           {% if page_obj.has_previous %}
-              <a href="?page=1">&laquo; first</a>
-              <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+              <!-- <a href="?page=1">&laquo; first</a>
+              <a href="?page={{ page_obj.previous_page_number }}">previous</a> -->
           {% endif %}
   
           <!-- <span class="current">
@@ -203,8 +199,8 @@
           </span> -->
   
           {% if page_obj.has_next %}
-              <a href="?page={{ page_obj.next_page_number }}">next</a>
-              <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+              <!-- <a href="?page={{ page_obj.next_page_number }}">next</a>
+              <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a> -->
           {% endif %}
       </span>
   </div>

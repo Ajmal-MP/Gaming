@@ -1,4 +1,5 @@
 from itertools import product
+from operator import mod
 from django.db import models
 from Accounts.models import Account
 from Product.models import Product
@@ -46,7 +47,8 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
+    def __str__(self):
+        return str(self.payment)
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
 
@@ -90,6 +92,13 @@ class Coupon(models.Model):
     valid_from = models.DateTimeField(auto_now_add=True)
     valid_at = models.DateField()
     active = models.BooleanField(default=False)
-
     def __str__(self):
         return self.code
+
+class UserCoupon(models.Model):
+    user =  models.ForeignKey(Account,on_delete=models.CASCADE, null= True)
+    coupone = models.ForeignKey(Coupon,on_delete = models.CASCADE, null = True)
+    order  = models.ForeignKey(Order,on_delete=models.SET_NULL,null = True,related_name='order_coupon')
+    used = models.BooleanField(default = False)
+    def __str__(self):  
+        return str(self.id)

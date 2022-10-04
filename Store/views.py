@@ -4,6 +4,8 @@ from Product.models import Product
 from Cart.models import CartItem,Cart
 from Cart.views import _cart_id
 import re
+from django.core.paginator import Paginator
+
 # Create your views here.
 def store(request,category_slug = None ,sub_category_slug = None):
     categories = None
@@ -14,6 +16,9 @@ def store(request,category_slug = None ,sub_category_slug = None):
     if category_slug != None and sub_category_slug == None:
         categories = get_object_or_404(Categories,slug = category_slug)
         product = Product.objects.filter(category_id = categories,is_active = True) 
+        paginator = Paginator(product, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
         product_count = product.count()
         filter_type = 'category'
 
@@ -21,6 +26,9 @@ def store(request,category_slug = None ,sub_category_slug = None):
             val=request.POST.get('value')
             val = re.findall("\d+", val) # code to get all inigers from string
             products = Product.objects.filter(category_id = categories,is_active = True).order_by('price') 
+            paginator = Paginator(product, 10)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
             min_price = int(val[0])
             max_price = int(val[1]) 
             product=[]
@@ -28,11 +36,17 @@ def store(request,category_slug = None ,sub_category_slug = None):
                 if int(item.price) >= min_price and int(item.price) <= max_price:
                     product.append(item)
             product_count = len(product)
+            paginator = Paginator(product, 10)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
             
 
     elif sub_category_slug != None and category_slug != None:
         sub_categories = get_object_or_404(SubCategories,slug = sub_category_slug)
         product = Product.objects.filter(subcategory_id = sub_categories, is_active = True)
+        paginator = Paginator(product, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
         product_count = product.count()
         filter_type = 'sub_category'
         if request.method == 'POST':
@@ -46,13 +60,20 @@ def store(request,category_slug = None ,sub_category_slug = None):
                 if int(item.price) >= min_price and int(item.price) <= max_price:
                     product.append(item)
             product_count = len(product)
+            paginator = Paginator(product, 10)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
     else:
         product = Product.objects.all().filter(is_active = True)
+        paginator = Paginator(product, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
         product_count = product.count()
     context = {
         'products': product,
         'product_count':product_count,
         'filter_type':filter_type,
+        'page_obj':page_obj
     }
     return render(request,'UserSide/store.html',context)
 

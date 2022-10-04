@@ -13,6 +13,8 @@ from django.contrib.auth import authenticate, logout
 from django.contrib.auth.decorators import login_required
 from .form import RegistrtationForm,UserUpdationForm
 from Order.models import Address
+from django.core.paginator import Paginator
+
 # Create your views here.
 def Register(request):
     if request.user.is_authenticated:
@@ -163,8 +165,12 @@ def account_detail_update(request):
 # Address manage ment
 def addresses(request):
     addresses=Address.objects.filter(user = request.user)
+    paginator = Paginator(addresses, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context={
-        'addresses':addresses
+        'addresses':addresses,
+        'page_obj':page_obj
     }
     return render(request,'UserSide/dashbord/address.html',context)
 
