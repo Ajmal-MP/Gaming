@@ -13,7 +13,7 @@
                     {% include 'UserSide/dashbord/user-dashbord-base.html' %}
                     <div class="col-sm-12 col-md-9 col-lg-9">
                         <div class="account_login_form">
-                            <form action="{% url 'add_address' %}" method="POST">
+                            <form action="{% url 'add_address' %}" method="POST" id="address_form">
                                 {% csrf_token %}
                                 <div class="row">                                
                                     <div class="col-lg-6">
@@ -25,7 +25,7 @@
                                     <div class="col-lg-6">
                                         <div class="default-form-box">
                                             <label>Last Name <span>*</span></label>
-                                            {% render_field form.last_name required="True" %}
+                                            {% render_field form.last_name  %}
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
@@ -51,13 +51,13 @@
                                     <div class="col-6">
                                         <div class="default-form-box">
                                             <label>Address Line 2<span>*</span></label>
-                                            {% render_field form.address_line_1 required="True" %}
+                                            {% render_field form.address_line_2  %}
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="default-form-box">
                                             <label>City <span>*</span></label>
-                                            {% render_field form.city  %}
+                                            {% render_field form.city required="True" %}
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -69,7 +69,7 @@
                                     <div class="col-12">
                                         <div class="default-form-box">
                                             <label for="country">country <span>*</span></label>
-                                            {% render_field form.country class="country_option nice-select wide" name="country" id="country" %}
+                                            {% render_field form.country class="country_option nice-select wide" name="country" id="country" required="True" %}
                                         </div>
                                     </div>
     
@@ -124,6 +124,48 @@
 
     <!-- Main JS -->
     <script src="{% static 'assets/js/main.js' %}"></script>
+
+
+    <script src="{% static 'js/jquery-form-validation.js' %}"></script>
+<script>
+  $(document).ready(function(){
+  $("#address_form").validate({
+    rules:{
+          first_name:{
+                        required:true,
+                        minlength:2
+                        }, 
+          last_name:{
+            required:false,
+            minlength:2
+                },
+            
+                phone:{
+                  required: true,
+                  number: true,
+                  minlength:10,
+                  maxlength:10, 
+                },
+          },
+
+
+    messages :{
+                first_name:{
+                        minlength:'Minimum 2 charecter required'
+                        },
+                last_name:{
+                        minlength:'Minimum 2 charecter required'
+                },
+                phone:{
+                  minlength:'Required 10 digits',
+                  maxlength:'Only 10 digits required', 
+                },
+              }
+  })
+})
+
+
+</script>
 </body>
 
 </html>

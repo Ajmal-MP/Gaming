@@ -15,7 +15,7 @@
                         <div class="tab-pane " id="account_update">
                             <h3 class="text-center">Update Account  </h3>
 
-                            <form action="{% url 'account_detail_update' %}" method="POST" enctype="multipart/form-data">
+                            <form action="{% url 'account_detail_update' %}" method="POST" enctype="multipart/form-data" id="account_form">
                                 {% csrf_token %}
                             <div class="d-flex justify-content-center">
                                 <div class="item">    
@@ -65,7 +65,7 @@
                                                     <div class="col-lg-6">
                                                         <div class="default-form-box">
                                                             <label> Email Address <span>*</span></label>
-                                                            {% render_field form.email required="True" %}
+                                                            {% render_field form.email required="True" type="email" %}
                                                         </div>
                                                     </div>
                                                     
@@ -120,6 +120,49 @@
 
         document.getElementById("profile_image-clear_id").hidden()
     </script>
+
+
+<script src="{% static 'js/jquery-form-validation.js' %}"></script>
+<script>
+  $(document).ready(function(){
+  $("#account_form").validate({
+    rules:{
+          first_name:{
+                        required:true,
+                        minlength:2
+                        }, 
+          last_name:{
+            required:false,
+            minlength:2
+                },
+            
+                mobile:{
+                  required: true,
+                  number: true,
+                  minlength:10,
+                  maxlength:10, 
+                },
+          },
+
+
+    messages :{
+                first_name:{
+                        minlength:'Minimum 2 charecter required'
+                        },
+                last_name:{
+                        minlength:'Minimum 2 charecter required'
+                },
+                mobile:{
+                  minlength:'Required 10 digits',
+                  maxlength:'Only 10 digits required', 
+                },
+              }
+  })
+})
+
+
+</script>
+
 
 </body>
 

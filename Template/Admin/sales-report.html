@@ -15,11 +15,11 @@
                 {% csrf_token %}
                 <div class="form-control bg-transparent border border-0">
                   <label for="" class="h5">Starting Date : </label>
-                  <input type="date" id="start_date" name="start_date" required="True">
+                  <input type="date" id="start_date" name="start_date" required="True" max="{{today_date}}">
                 </div>
                 <div class="form-control bg-transparent border-0">
                   <label for="" class="h5">Ending Date : </label>
-                <input type="date" id="end_date" name="end_date" required="True">
+                <input type="date" id="end_date" name="end_date" required="True" max="{{today_date}}">
                 </div>
                 <button class="btn btn-success btn-sm mt-2 ml-3 px-4" type="submit">Filter</button>
               </form>

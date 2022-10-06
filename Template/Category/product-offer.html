@@ -17,13 +17,13 @@
       <div class="card" style="height: 716px;">
         <div class="card-body">
           <div class="d-flex">
-            <p class="card-title mb-0">Categories</p>
+            <p class="card-title mb-0">Products</p>
           </div>
           <div class="table-responsive">
             <table class="table table-striped table-borderless">
               <thead>
                 <tr>
-                  <th>Category Name</th>
+                  <th>Product Name</th>
                   <th>Created Date</th>
                   <th>Offer</th>
                 </tr>  
@@ -62,7 +62,7 @@
                   <div class="modal-dialog modal-dialog-centered" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalCenterTitle">Add Category Offer</h5>
+                          <h5 class="modal-title" id="exampleModalCenterTitle">Add Product Offer</h5>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
@@ -71,15 +71,15 @@
 
 
 
-                          <form action="{% url 'add-product-offer' %}" class="forms-sample" method="POST">
+                          <form action="{% url 'add-product-offer' %}" class="forms-sample" id="offer_submition{{object.id}}" method="POST">
                             {% csrf_token %}
                             <div class="form-group">
-                              <label for="exampleInputUsername1">Category  Name</label>
-                              <input type="text" class="form-control" id="exampleInputUsername1" name="product_name" value="{{object.product_name}}" block>
+                              <label for="exampleInputUsername1">Product  Name</label>
+                              <input type="text" class="form-control" id="exampleInputUsername1" name="product_name" value="{{object.product_name}}" readonly>
                             </div>
                             <div class="form-group">
                               <label for="exampleInputUsername1">Offer In % :</label>
-                              <input type="number" class="form-control" id="exampleInputUsername1" name="product_offer">
+                              <input type="number" class="form-control"  name="product_offer" min="0" max="70" required="True">
                             </div>
                         
                         </div>
@@ -97,7 +97,7 @@
                   <div class="modal-dialog modal-dialog-centered" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title" id="ModalCenterTitle">Add Category Offer</h5>
+                          <h5 class="modal-title" id="ModalCenterTitle">Update Product Offer</h5>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
@@ -109,12 +109,12 @@
                           <form action="{% url 'add-product-offer' %}" class="forms-sample" method="POST">
                             {% csrf_token %}
                             <div class="form-group">
-                              <label for="exampleInputUsername1">Category  Name</label>
-                              <input type="text" class="form-control" id="exampleInputUsername1" name="product_name" value="{{object.product_name}}" block>
+                              <label for="exampleInputUsername1">Product  Name</label>
+                              <input type="text" class="form-control" id="exampleInputUsername1" name="product_name" value="{{object.product_name}}" readonly>
                             </div>
                             <div class="form-group">
                               <label for="exampleInputUsername1">Offer In % :</label>
-                              <input type="number" class="form-control" id="exampleInputUsername1" name="product_offer" value="{{object.product_offer}}">
+                              <input type="number" class="form-control" id="exampleInputUsername1" name="product_offer" value="{{object.product_offer}}" min="0" max="70" required="True">
                             </div>
                         
                         </div>
@@ -132,14 +132,14 @@
                   <div class="modal-dialog modal-dialog-centered" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title" id="ModalCenterTitle">Add Category Offer</h5>
+                          <h5 class="modal-title" id="ModalCenterTitle">Delete Product Offer</h5>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
                         <div class="modal-body">
 
-                          Do you want to delete offer of category "{{object.product_name}}" ?
+                          Do you want to delete offer of product "{{object.product_name}}" ?
                         
                         </div>
                         <div class="modal-footer">
@@ -196,6 +196,12 @@
 <!-- content-wrapper ends -->
 </div>
 <!-- main-panel ends -->
+
+
+
+
+
+
 </body>
 <!-- page-body-wrapper ends -->
 </html>

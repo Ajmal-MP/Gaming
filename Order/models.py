@@ -86,7 +86,7 @@ class Address(models.Model):
 
 
 class Coupon(models.Model):
-    code = models.CharField(max_length=50)
+    code = models.CharField(max_length=50,unique=True)
     discount = models.IntegerField(validators = [MinValueValidator(0),MaxValueValidator(20)])
     min_value = models.IntegerField(validators = [MinValueValidator(0)])
     valid_from = models.DateTimeField(auto_now_add=True)

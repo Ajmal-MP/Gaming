@@ -142,72 +142,12 @@
 
 
 
-<!-- jquery form vlaidation -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-<script type="text/javascript" src="{% static 'js/form-validation.js' %}"></script>
-<script type="text/javascript">
 
-$(document).ready(function(){
-  $("#image-form").validate({
-    rules:{
-          product_name:{
-                        required:true,
-                        minlength:2
-                        }, 
-          brand:{
-            required:true,
-            minlength:2
-                },
-            
-                price:{
-                  required:true, 
-                },
-                stock:{
-                  min:0
-                },
-                product_description:{
-                  minlength:10
-                }
-          },
-
-
-    messages :{
-              product_name:{
-                            minlength:"Minimum 4 charecter needed",
-                            },
-              brand:{
-                minlength:"Minimum 4 charecter needed",
-              },
-              price:{
-                min:'Price must be posative number'
-              },
-              stock:{
-                min:'Stock must be posative number'
-              },
-              product_description:{
-                minlength:"Minimum 10 charecter needed", 
-              }
-              }
-  })
-})
-
-
-</script>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/3.1.3/cropper.min.js"></script>
-
-
-
-
-
-
-
-
-
 
 <script>
   $(function () {
@@ -274,6 +214,65 @@ $(document).ready(function(){
   });
 
   });
+</script>
+
+<!-- jquery form vlaidation -->
+<script src="{% static 'js/jquery-form-validation.js' %}"></script>
+<script>
+  $(document).ready(function(){
+  $("#image-form").validate({
+    rules:{
+          product_name:{
+                        required:true,
+                        minlength:2
+                        }, 
+          brand:{
+            required:true,
+            minlength:2
+                },
+            
+                price:{
+                  required:true, 
+                },
+                stock:{
+                  min:0
+                },
+                product_description:{
+                  minlength:10
+                },
+                product_offer:{
+                  required:false,
+                  min:0,
+                  max:70,
+                }
+          },
+
+
+    messages :{
+              product_name:{
+                            minlength:"Minimum 2 charecter needed",
+                            },
+              brand:{
+                minlength:"Minimum 2 charecter needed",
+              },
+              price:{
+                min:'Price must be posative number'
+              },
+              stock:{
+                min:'Stock must be posative number'
+              },
+              product_description:{
+                minlength:"Minimum 10 charecter needed", 
+              },
+              product_offer:{
+                  min:'Offer must be posative number',
+                  max:'Offer must be less than or equal 70%',
+                }
+              }
+  })
+})
+
+
 </script>
 </body>
 <!-- page-body-wrapper ends -->

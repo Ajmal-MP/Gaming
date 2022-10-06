@@ -16,8 +16,7 @@
   {% render_field form.category_name name="category_name" id="category_name" placeholder="category" class="form-control" %}
   </div>
   <div class="form-group">
-  <label>slug</label>
-  {% render_field form.slug name="slug" id="slug" placeholder="categorys" class="form-control" %}
+  {% render_field form.slug name="slug" id="slug" placeholder="categorys" class="form-control d-none" %}
   </div>
 
   <div class="form-group">
@@ -43,21 +42,29 @@
 </script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script type="text/javascript" src="{% static 'js/form-validation.js' %}"></script>
+<script src="{% static 'js/jquery-form-validation.js' %}"></script>
 <script type="text/javascript">
   $(document).ready(function(){
     $("#category_add").validate({
       rules:{
+        category_name:{
+          required:true,
+          minlength:2
+        },
+
         category_offer: {
-          number:true,
-          minlength:0,
-          maxlength:70
+          required:false,
+          min:0,
+          max:70
         }
       },
       messages :{
         category_offer:{
           maxlength:"Offer price should be less than 70%"
-        }
+        },
+        category_name:{
+          minlength:'Minimum 2 charecter needed'
+        },
       }
     })
   })

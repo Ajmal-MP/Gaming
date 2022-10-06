@@ -12,8 +12,17 @@ def store(request,category_slug = None ,sub_category_slug = None):
     sub_categories = None
     product = None
     filter_type = None    
-
-    if category_slug != None and sub_category_slug == None:
+    if 'query' in request.GET:
+        query = request.GET.get('query')
+        if query:
+            product = Product.objects.filter(product_name__icontains = query)
+            paginator = Paginator(product, 10)
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            product_count = product.count()
+        else:
+            return redirect(store)
+    elif category_slug != None and sub_category_slug == None:
         categories = get_object_or_404(Categories,slug = category_slug)
         product = Product.objects.filter(category_id = categories,is_active = True) 
         paginator = Paginator(product, 10)
@@ -21,6 +30,7 @@ def store(request,category_slug = None ,sub_category_slug = None):
         page_obj = paginator.get_page(page_number)
         product_count = product.count()
         filter_type = 'category'
+
 
         if request.method == 'POST':
             val=request.POST.get('value')

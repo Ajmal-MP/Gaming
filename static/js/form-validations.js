@@ -1,43 +1,53 @@
 $(document).ready(function(){
-    $("#signup").validate({
-      rules:{
-        first_name:{
-          required:true,
-          minlength:4
-        }, 
-        last_name:{
-          required:true,
-          minlength:4
-        },
-        email:{
-          required:true,
-          email:true
-        },
-        mobile:{
-          required:true,
-          number:true,
-          minlength:10,
-          maxlength:11
-        },
-        password:{
-          required:true,
-          minlength:5
-        },
-        confirm_password : {
-                  minlength : 5,
-                  equalTo : "#password"
+  $("#image-form").validate({
+    rules:{
+          product_name:{
+                        required:true,
+                        minlength:2
+                        }, 
+          brand:{
+            required:true,
+            minlength:2
+                },
+            
+                price:{
+                  required:true, 
+                },
+                stock:{
+                  min:0
+                },
+                product_description:{
+                  minlength:10
+                },
+                product_offer:{
+                  required:false,
+                  min:0,
+                  max:70,
+                }
+          },
+
+
+    messages :{
+              product_name:{
+                            minlength:"Minimum 2 charecter needed",
+                            },
+              brand:{
+                minlength:"Minimum 2 charecter needed",
+              },
+              price:{
+                min:'Price must be posative number'
+              },
+              stock:{
+                min:'Stock must be posative number'
+              },
+              product_description:{
+                minlength:"Minimum 10 charecter needed", 
+              },
+              product_offer:{
+                  min:'Offer must be posative number',
+                  max:'Offer must be less than or equal 70%',
+                }
               }
-      },
-      messages :{
-        first_name:{
-          minlength:"Name should be atleast 3 charecters"
-        },
-        last_name:{
-          minlength:"Name should be atleast 3 charecters"
-        },
-        confirm_password:{
-          equalTo:"Password doesn't match"
-        }
-      }
-    })
   })
+})
+

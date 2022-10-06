@@ -65,6 +65,9 @@
     .not-visible {
     display: none;
     }
+    .error {
+    color:red;
+}
   </style>
 
     <title>Gaming Gadgets</title>
@@ -79,14 +82,59 @@
         <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
           <ul class="navbar-nav mr-lg-2">
             <li class="nav-item nav-search d-none d-lg-block">
+              {% if serch_item %}
               <div class="input-group">
                 <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
                   <span class="input-group-text" id="search">
                     <i class="icon-search"></i>
                   </span>
                 </div>
-                <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search" aria-describedby="search">
+                {% if serch_item == 1 %}
+                <form action="{% url 'user_display' %}" method="">
+                <input type="text" class="form-control" id="navbar-search-input" placeholder="Search Eamil" aria-label="search" aria-describedby="search" name="query">
+                  {% elif serch_item == 2 %}
+                <form action="{% url 'admin_orders' %}" method="">
+                <input type="text" class="form-control" id="navbar-search-input" placeholder="Search Tracking id" aria-label="search" aria-describedby="search" name="query">
+
+                {% elif serch_item == 3 %}
+                <form action="{% url 'category' %}" method="">
+                <input type="text" class="form-control" id="navbar-search-input" placeholder="Search Category Name" aria-label="search" aria-describedby="search" name="query">
+
+                {% elif serch_item == 4 %}
+                <form action="{% url 'sub_category_list' %}" method="">
+                <input type="text" class="form-control" id="navbar-search-input" placeholder="Search Sub Category Name" aria-label="search" aria-describedby="search" name="query">
+
+                  {% elif serch_item == 5 %}
+                  <form action="{% url 'product' %}" method=""> 
+                <input type="text" class="form-control" id="navbar-search-input" placeholder="Search Product Name" aria-label="search" aria-describedby="search" name="query">
+
+                    {% elif serch_item == 6 %}
+                    <form action="{% url 'product_offer' %}" method=""> 
+                <input type="text" class="form-control" id="navbar-search-input" placeholder="Search Product Name" aria-label="search" aria-describedby="search" name="query">
+
+                      {% elif serch_item == 7 %}
+                    <form action="{% url 'category_offer' %}" method=""> 
+                <input type="text" class="form-control" id="navbar-search-input" placeholder="Search Categoroy Name" aria-label="search" aria-describedby="search" name="query">
+
+                      {% elif serch_item == 8 %}
+                    <form action="{% url 'admin_display_coupon' %}" method="">
+                  <input type="text" class="form-control" id="navbar-search-input" placeholder="Search Coupon Code" aria-label="search" aria-describedby="search" name="query">
+
+                {%endif%}
+                </form>
               </div>
+              {%else%}
+              <div class="input-group">
+                <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
+                  <span class="input-group-text" id="search">
+                    <i class="icon-search"></i>
+                  </span>
+                </div>
+                  <form action="{% url 'product' %}" method="">   
+                  <input type="text" class="form-control" id="navbar-search-input" placeholder="Product Name" aria-label="search" aria-describedby="search" name="query">
+                </form>
+              </div>
+              {%endif%}
             </li>
           </ul>
           <ul class="navbar-nav navbar-nav-right">
@@ -135,6 +183,55 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+              <i class="icon-grid menu-icon"></i>
+              <span class="menu-title">Category</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="auth">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a  class="nav-link" href="{% url 'category' %}">Categories</a></li>
+                <li class="nav-item"> <a  class="nav-link" href="{% url 'sub_category_list' %}">Sub Categories</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#product" aria-expanded="false" aria-controls="auth">
+              <i class="icon-grid menu-icon"></i>
+              <span class="menu-title">Product</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="product">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a  class="nav-link" href="{% url 'product' %}">Product List</a></li>
+                <li class="nav-item"> <a  class="nav-link" href="{% url 'add_product' %}">Add Product</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'admin_orders' %}">
+              <i class="icon-head menu-icon"></i>
+              <span class="menu-title">Orders</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#offer" aria-expanded="false" aria-controls="auth">
+              <i class="icon-grid menu-icon"></i>
+              <span class="menu-title">Offers</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="offer">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a  class="nav-link" href="{% url 'product_offer' %}">Product Offer</a></li>
+                <li class="nav-item"> <a  class="nav-link" href="{% url 'category_offer' %}">Category Offer</a></li>
+                <li class="nav-item"> <a  class="nav-link" href="{% url 'admin_display_coupon' %}">Coupon</a></li>
+              </ul>
+            </div>
+          </li>
 
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#sales" aria-expanded="false" aria-controls="auth">
@@ -151,58 +248,7 @@
           </li>
 
 
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'admin_orders' %}">
-              <i class="icon-head menu-icon"></i>
-              <span class="menu-title">Orders</span>
-            </a>
-          </li>
 
-
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-              <i class="icon-grid menu-icon"></i>
-              <span class="menu-title">Category</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="auth">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a  class="nav-link" href="{% url 'category' %}">Categories</a></li>
-                <li class="nav-item"> <a  class="nav-link" href="{% url 'sub_category_list' %}">Sub Categories</a></li>
-              </ul>
-            </div>
-          </li>
-          
-
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#product" aria-expanded="false" aria-controls="auth">
-              <i class="icon-grid menu-icon"></i>
-              <span class="menu-title">Product</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="product">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a  class="nav-link" href="{% url 'product' %}">Product List</a></li>
-                <li class="nav-item"> <a  class="nav-link" href="{% url 'add_product' %}">Add Product</a></li>
-              </ul>
-            </div>
-          </li>
-
-
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#offer" aria-expanded="false" aria-controls="auth">
-              <i class="icon-grid menu-icon"></i>
-              <span class="menu-title">Offers</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="offer">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a  class="nav-link" href="{% url 'product_offer' %}">Product Offer</a></li>
-                <li class="nav-item"> <a  class="nav-link" href="{% url 'category_offer' %}">Category Offer</a></li>
-                <li class="nav-item"> <a  class="nav-link" href="{% url 'admin_display_coupon' %}">Coupon</a></li>
-              </ul>
-            </div>
-          </li>
           
         </ul>
       </nav>

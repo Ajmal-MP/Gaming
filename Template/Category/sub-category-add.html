@@ -8,20 +8,20 @@
 
 
 <div class="card-body">
-<form method='POST' action="" enctype="">
+<form method='POST' action="" enctype="" id="category_add">
     {% csrf_token %}
 
   <div class="form-group">
   <label>Sub Category</label>
   {% render_field form.sub_category_name name="sub_category_name" id="sub_category_name" placeholder="sub category" class="form-control" %}
   </div>
-  <div class="form-group">
+  <div class="form-group d-none">
   <label>slug</label>
   {% render_field form.slug name="slug" id="slug" placeholder="slug" class="form-control" %}
   </div>
   <div class="form-group">
     <label>Category</label>
-    {% render_field form.category class="form-control" %}
+    {% render_field form.category class="form-control" required="True" %}
     </div>
   </div>
   <!-- copy from here -->
@@ -39,6 +39,27 @@
   document.getElementById("sub_category_name").onkeyup=function(){
     document.getElementById("slug").value=document.getElementById("sub_category_name").value.toLowerCase().replaceAll(" ","-");
   }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="{% static 'js/jquery-form-validation.js' %}"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#category_add").validate({
+      rules:{
+        sub_category_name:{
+          required:true,
+          minlength:2
+        },
+      },
+      messages :{
+
+        sub_category_name:{
+          minlength:'Minimum 2 charecter needed'
+        },
+      }
+    })
+  })
 </script>
 </body>
 <!-- page-body-wrapper ends -->

@@ -8,7 +8,6 @@
         <!-- ...:::: Start Account Dashboard Section:::... -->
        <div class="account-dashboard">
             <div class="container my-5">
-                
                 <div class="row">
                     {% include 'UserSide/dashbord/user-dashbord-base.html' %}
                     {% if orders %}
@@ -54,7 +53,7 @@
 
                                         <img width="50px" src="{{item.product.product_image_1.url}}" alt="">
 
-                                        <div class="">
+                                        <div class="mb-2">
                                             <span style="font-size:17px ;" class="text-dark">{{item.product.product_name}} x {{item.quantity}}  </span><br>
                                             <span style="font-weight: bold;">Brand:&nbsp;</span>{{item.product.brand}}
                                         </div>
@@ -90,8 +89,11 @@
                                                             <div class="col-md-4">
                                                                 {% for item in order.user_order_page.all %}
                                                                 <div class="modal-add-cart-product-img">
-                                                                    <img class="img-fluid"
-                                                                        src="{{item.product.product_image_1.url}}" alt="">
+                                                                    <img class="img-fluid" src="{{item.product.product_image_1.url}}" alt="">
+                                                                    <div class="mb-2 text-left">
+                                                                        <span style="font-size:17px ;" class="text-dark">{{item.product.product_name}} x {{item.quantity}}  </span><br>
+                                                                        <span style="font-weight: bold;">Brand:&nbsp;</span>{{item.product.brand}}
+                                                                    </div>
                                                                 </div>
                                                                 {%endfor%}
                                                             </div>

@@ -13,7 +13,7 @@
                     {% include 'UserSide/dashbord/user-dashbord-base.html' %}
                     <div class="col-sm-12 col-md-9 col-lg-9">
                         <div class="account_login_form">
-                            <form action="" method="POST">
+                            <form action="" method="POST" id="address_form">
                                 {% csrf_token %}
                                 <div class="row">                                
                                     <div class="col-lg-6">
@@ -124,6 +124,47 @@
 
     <!-- Main JS -->
     <script src="{% static 'assets/js/main.js' %}"></script>
+
+    <script src="{% static 'js/jquery-form-validation.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+        $("#address_form").validate({
+          rules:{
+                first_name:{
+                              required:true,
+                              minlength:2
+                              }, 
+                last_name:{
+                  required:false,
+                  minlength:2
+                      },
+                  
+                      phone:{
+                        required: true,
+                        number: true,
+                        minlength:10,
+                        maxlength:10, 
+                      },
+                },
+      
+      
+          messages :{
+                      first_name:{
+                              minlength:'Minimum 2 charecter required'
+                              },
+                      last_name:{
+                              minlength:'Minimum 2 charecter required'
+                      },
+                      phone:{
+                        minlength:'Required 10 digits',
+                        maxlength:'Only 10 digits required', 
+                      },
+                    }
+        })
+      })
+      
+      
+      </script>
 </body>
 
 </html>

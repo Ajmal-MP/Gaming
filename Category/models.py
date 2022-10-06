@@ -1,12 +1,13 @@
+from enum import unique
 from django.db import models
 from django.urls import reverse
 # Create your models here.
 
 class Categories(models.Model):
     id =  models.AutoField(primary_key=True)
-    category_name = models.CharField(max_length=255)
+    category_name = models.CharField(max_length=255,unique=True)
     category_offer = models.IntegerField(null = True)
-    slug = models.CharField(max_length=255)
+    slug = models.CharField(max_length=255,unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -21,7 +22,7 @@ class Categories(models.Model):
     
 
 class SubCategories(models.Model):
-    sub_category_name =models.CharField(max_length=225,db_index=True)
+    sub_category_name =models.CharField(max_length=225,db_index=True,unique=True)
     category         =models.ForeignKey(Categories,on_delete=models.CASCADE,related_name='category')
     slug             =models.SlugField(max_length=225,unique=True)
     is_active        =models.BooleanField(default=True)

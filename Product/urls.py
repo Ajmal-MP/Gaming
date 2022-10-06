@@ -14,7 +14,4 @@ urlpatterns = [
     path("product_offer",product_offer,name='product_offer'),
     path("add-product-offer",add_product_offer,name='add-product-offer'),
     path("product_offer_delete/<int:id>",product_offer_delete,name='product_offer_delete'),
-
-
-
 ]

@@ -21,8 +21,8 @@
             <table class="table table-striped table-borderless">
               <thead>
                 <tr>
-                  <th>First Name</th>
-                  <th>Last Name</th>
+                  <th>No</th>
+                  <th>Full Name</th>
                   <th>Email</th>
                   <th>Mobile</th>
                   <th>Block/Un Block</th>
@@ -31,10 +31,8 @@
               <tbody>
               <tr>
                 {% for object in page_obj %}
-                <td>
-                    {{object.first_name}}
-                </td>
-                <td>{{object.last_name}}</td>
+                <td>{{forloop.counter}}</td>
+                <td>{{object.full_name}}</td>
                 <td>{{object.email}}</td>
                 <td>{{object.mobile}}</td>
                 

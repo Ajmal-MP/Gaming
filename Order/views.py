@@ -252,7 +252,7 @@ def cash_on_delivery(request,id):
 #order management
 
 def user_orders(request):
-    orders = Order.objects.filter(user = request.user, is_ordered = True)
+    orders = Order.objects.filter(user = request.user, is_ordered = True).order_by('-created_at') 
     paginator = Paginator(orders, 8)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -264,13 +264,22 @@ def user_orders(request):
 
 
 def admin_orders_list(request):
-    orders = Order.objects.filter(is_ordered = True).order_by('-created_at')
+    if 'query' in request.GET:
+        query = request.GET.get('query')
+        print(query)
+        if query:
+            orders = Order.objects.filter(is_ordered = True,order_number__icontains = query).order_by('-created_at')           
+        else:
+            return redirect(admin_orders_list)
+    else:        
+        orders = Order.objects.filter(is_ordered = True).order_by('-created_at')
     paginator = Paginator(orders, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
         'orders' : orders,
-        'page_obj': page_obj
+        'page_obj': page_obj,
+        'serch_item':2
     }
     return render(request,'Admin/admin-order-detail.html',context)
 
@@ -343,14 +352,23 @@ def coupon(request):
 
 
 def admin_display_coupon(request):
-    coupons = Coupon.objects.all()
+    if 'query' in request.GET:
+        query = request.GET.get('query')
+        print(query)
+        if query:
+            coupons = Coupon.objects.filter(code__icontains = query)            
+        else:
+            return redirect(admin_display_coupon)
+    else:
+        coupons = Coupon.objects.all()
     paginator = Paginator(coupons, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     print(coupons)
     context = {
         'coupons': coupons,
-        'page_obj' : page_obj
+        'page_obj' : page_obj,
+        'serch_item':8
     }
     return render(request, 'admin/admin_display_coupon.html', context)
 
@@ -363,12 +381,13 @@ def admin_add_coupon(request):
             messages.success(request,'Coupon Added successfully')
             return redirect(admin_display_coupon)
         else:
-            print(form.errors.as_data()) 
-            messages.error(request, 'Error adding coupon')
+            messages.error(request, 'Coupon with this code already exists !')
             return redirect(admin_display_coupon)
     form = CouponForm()
+    today_date=str(datetime.date.today())
     context = { 
         'form':form,
+        'today_date': today_date
     }
     return render(request,'Admin/admin-add-coupon.html',context)
 
@@ -389,6 +408,7 @@ def coupon_update(request, id) :
             messages.success(request,'Coupon Updated success fully ')
             return redirect(admin_display_coupon)    
     form = CouponForm(instance=category)
-    context = {'form' : form}
+    today_date=str(datetime.date.today())
+    context = {'form' : form,'today_date': today_date}
     return render(request, 'Admin/admin-add-coupon.html', context)  
 

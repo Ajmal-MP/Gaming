@@ -5,7 +5,7 @@ from requests import delete
 from .form import UserForm,Account
 from django.contrib.admin.views.decorators import staff_member_required  
 from Order.models import Order, Payment
-from datetime import datetime,timedelta
+from datetime import datetime,timedelta,date
 from django.db.models import Sum,Q
 from django.core.paginator import Paginator
 # Create your views here.
@@ -35,7 +35,14 @@ def Admin_logout(request):
 #To display all user
 @staff_member_required(login_url='admin_login')
 def user_display(request):
-    user=Account.objects.filter(is_superadmin = False)
+    if 'query' in request.GET:
+        query = request.GET.get('query')
+        if query:
+            user = Account.objects.filter(email__icontains = query,is_superadmin = False)
+        else:
+            return redirect(user_display)
+    else:
+        user=Account.objects.filter(is_superadmin = False)
     paginator = Paginator(user, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -43,7 +50,8 @@ def user_display(request):
     context={
         'user':user,
         'form':form,
-        'page_obj': page_obj
+        'page_obj': page_obj,
+        'serch_item':1
     }
     return render(request,'Admin/admin-display-user.html',context) 
 
@@ -72,8 +80,10 @@ def sales_report(request):
         year = datetime.now().year
         month = today.month
         orders = Order.objects.filter(created_at__year = year,created_at__month=month,payment__status = True).values('user_order_page__product__product_name','user_order_page__product__stock',total = Sum('order_total'),).annotate(dcount=Sum('user_order_page__quantity')).order_by()
+    today_date=str(date.today())
     context = {
         'orders':orders,
+        'today_date':today_date
     }
     return render(request,'Admin/sales-report.html',context)  
 
@@ -82,7 +92,9 @@ def year_sales_report(request):
     year = datetime.now().year
     orders = Order.objects.filter(created_at__year=year,payment__status = True).values('user_order_page__product__product_name','user_order_page__product__stock',total = Sum('order_total'),).annotate(dcount=Sum('user_order_page__quantity')).order_by()
     total_payment_amount = Payment.objects.filter(status = True,created_at__year=year).aggregate(Sum('amount_paid'))
+    today_date=str(date.today())
     context = {
+        'today_date':today_date,
         'orders':orders,
         'total_payment_amount':total_payment_amount,
     }
