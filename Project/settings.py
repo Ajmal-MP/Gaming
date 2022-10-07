@@ -104,7 +104,6 @@ AUTH_USER_MODEL='Accounts.Account'
 #     }
 # }
 
-print(os.environ.get("SQL_PASSWORD","password"))
 DATABASES = {
     "default": {
         "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),

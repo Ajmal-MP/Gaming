@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Order', '0024_usercoupon_order_usercoupon_total_amount'),
+        ('Order', '0020_usercoupon_order_usercoupon_total_amount'),
     ]
 
     operations = [

@@ -4,5 +4,4 @@ Dockerfile
 docker-compose.yml
 needs.txt
 run.sh
-.dockerignore
-docker-compose.yml
+
