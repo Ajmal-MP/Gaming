@@ -4,4 +4,8 @@ Dockerfile
 docker-compose.yml
 needs.txt
 run.sh
+.env
+.vscode
+static
+
 

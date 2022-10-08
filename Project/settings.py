@@ -34,6 +34,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # ALLOWED_HOSTS = ['*']
 
 SECRET_KEY = '_1w#$!p7nvb)-*p$%xmkal(w_9q4-mc6!hfxlr5v64spte@e(@'
+
 DEBUG = 1
 ALLOWED_HOSTS = []
 
@@ -97,23 +98,23 @@ AUTH_USER_MODEL='Accounts.Account'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
-    "default": {
-        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
-        "USER": os.environ.get("SQL_USER", "user"),
-        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
-        "HOST": os.environ.get("SQL_HOST", "localhost"),
-        "PORT": os.environ.get("SQL_PORT", "5432"),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
+#         "NAME": os.environ.get("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
+#         "USER": os.environ.get("SQL_USER", "user"),
+#         "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
+#         "HOST": os.environ.get("SQL_HOST", "localhost"),
+#         "PORT": os.environ.get("SQL_PORT", "5432"),
+#     }
+# }
 
 
 # Password validation
@@ -164,6 +165,7 @@ MEDIA_ROOT = BASE_DIR/'media'
 
 #twilio
 ACCOUNT_SID = os.environ.get("ACCOUNT_SID")
+print(ACCOUNT_SID)
 AUTH_TOKEN = os.environ.get("AUTH_TOKEN")
 SERVICES_ID = os.environ.get("SERVICES_ID")
  
