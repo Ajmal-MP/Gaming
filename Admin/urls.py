@@ -6,6 +6,6 @@ urlpatterns = [
     path("user_display",user_display,name='user_display'),
     path("user_block/<int:id>/<int:flag>",user_block,name='user_block'),
     path("sales_report",sales_report,name='sales_report'),
-    path("year_sales_report",year_sales_report,name='year_sales_report'),
     path("dashbord",dashbord,name='dashbord'),
+    path("sales_report_month/<int:id>",sales_report_month,name='sales_report_month')
 ]

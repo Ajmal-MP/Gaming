@@ -1,0 +1,41 @@
+<div class="table-responsive pt-3" id="slaes-report-table">
+    <table class="table table-bordered" id="tbl_exporttable_to_xls">
+        <thead>
+          <tr>
+            <th>
+              Product Name
+            </th>
+            <th>
+              Item Selled
+            </th>
+            <th>
+              In Stock
+            </th>
+
+            <th>
+              Amounts
+            </th>
+          </tr>
+        </thead>
+        
+        {% for order in orders %}
+        <tbody>
+          <tr class="table-info">
+            <td>
+              {{order.user_order_page__product__product_name}}
+            </td>
+            <td>
+              {{order.dcount}}
+            </td>
+            <td>
+                {{order.user_order_page__product__stock}}  
+            </td>
+            
+            <td>
+              {{order.total}}
+            </td>
+          </tr>
+        </tbody>
+        {%endfor%}
+      </table>
+</div>

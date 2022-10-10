@@ -88,18 +88,15 @@ def sales_report(request):
     return render(request,'Admin/sales-report.html',context)  
 
 @staff_member_required(login_url='admin_login')
-def year_sales_report(request):
-    year = datetime.now().year
-    orders = Order.objects.filter(created_at__year=year,payment__status = True).values('user_order_page__product__product_name','user_order_page__product__stock',total = Sum('order_total'),).annotate(dcount=Sum('user_order_page__quantity')).order_by()
-    total_payment_amount = Payment.objects.filter(status = True,created_at__year=year).aggregate(Sum('amount_paid'))
+def sales_report_month(request,id):
+    orders = Order.objects.filter(created_at__month = id,payment__status = True).values('user_order_page__product__product_name','user_order_page__product__stock',total = Sum('order_total'),).annotate(dcount=Sum('user_order_page__quantity')).order_by()    
+    print(orders)
     today_date=str(date.today())
     context = {
-        'today_date':today_date,
         'orders':orders,
-        'total_payment_amount':total_payment_amount,
+        'today_date':today_date
     }
-    return render(request,'Admin/sales-report.html',context) 
-
+    return render(request,'Admin/sales-report-table.html',context) 
 
 
 
@@ -120,7 +117,10 @@ def dashbord(request):
     cash_on_delivery_count = Payment.objects.filter(payment_method="Cash On Delivery",status = True).count()
 
     total_payment_count = paypal_orders + razorpay_orders +cash_on_delivery_count
-    total_payment_amount = Payment.objects.filter(status = True).aggregate(Sum('amount_paid'))
+    try:
+        total_payment_amount = Payment.objects.filter(status = True).aggregate(Sum('amount_paid'))
+    except:
+        total_payment_amount=0
 
     blocked_user = Account.objects.filter(is_active = False,is_superadmin = False).count()
     unblockd_user = Account.objects.filter(is_active = True,is_superadmin = False).count()

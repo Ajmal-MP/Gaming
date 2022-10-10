@@ -6,73 +6,210 @@
 <div class="stretch-card">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Monthly Sales Report</h4>
+        <h4 class="card-title">Sales Report</h4>
         <div class="row">
           <div class="card card-tale col-6">
             <div class="card-body">
               <p class="mb-4">Based On Date</p>
-              <form action="{% url 'sales_report' %}" method="POST">
-                {% csrf_token %}
-                <div class="form-control bg-transparent border border-0">
-                  <label for="" class="h5">Starting Date : </label>
-                  <input type="date" id="start_date" name="start_date" required="True" max="{{today_date}}">
+              <div class="row">
+                <div class="col-8">
+                  <div>
+                    <form action="{% url 'sales_report' %}" method="POST">
+                      {% csrf_token %}
+                      <div class="form bg-transparent border border-0">
+                        <label for="" class="h5">Starting Date : </label>
+                        <input type="date" id="start_date" name="start_date" required="True" max="{{today_date}}">
+                      </div>
+                      <div class="form  mt-3 bg-transparent border-0">
+                        <label for="" class="h5 mr-2">Ending Date : </label>
+                      <input type="date" id="end_date" name="end_date" required="True" max="{{today_date}}">
+                      </div>
+                      <button class="btn btn-success btn-sm px-2 mt-3  px-4" type="submit">Filter</button>
+                    </form>
                 </div>
-                <div class="form-control bg-transparent border-0">
-                  <label for="" class="h5">Ending Date : </label>
-                <input type="date" id="end_date" name="end_date" required="True" max="{{today_date}}">
                 </div>
-                <button class="btn btn-success btn-sm mt-2 ml-3 px-4" type="submit">Filter</button>
-              </form>
+                <div class="col">
+                  <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Month
+                    </button>
+                    <ul class="dropdown-menu text-center" aria-labelledby="dropdownMenuButton1">
+                     <li>
+                      <a 
+                      hx-get="{% url 'sales_report_month' id=1 %}"
+                      hx-trigger="click"
+                      hx-target="#slaes-report-table"
+                      hx-swap="innerHTML"
+                      >
+                      Janaury
+                      </a>
+                     </li> 
+                    
+                     <li>
+                      <a 
+                      hx-get="{% url 'sales_report_month' id=2 %}"
+                      hx-trigger="click"
+                      hx-target="#slaes-report-table"
+                      hx-swap="innerHTML"
+                      >
+                      February
+                      </a>
+                     </li> 
+    
+                     <li>
+                      <a 
+                      hx-get="{% url 'sales_report_month' id=3 %}"
+                      hx-trigger="click"
+                      hx-target="#slaes-report-table"
+                      hx-swap="innerHTML"
+                      >
+                      March
+                      </a>
+                     </li> 
+    
+                     <li>
+                      <a 
+                      hx-get="{% url 'sales_report_month' id=4 %}"
+                      hx-trigger="click"
+                      hx-target="#slaes-report-table"
+                      hx-swap="innerHTML"
+                      >
+                      April
+                      </a>
+                     </li> 
+    
+                     <li>
+                      <a 
+                      hx-get="{% url 'sales_report_month' id=5 %}"
+                      hx-trigger="click"
+                      hx-target="#slaes-report-table"
+                      hx-swap="innerHTML"
+                      >
+                      May
+                      </a>
+                     </li> 
+    
+                     <li>
+                      <a 
+                      hx-get="{% url 'sales_report_month' id=6 %}"
+                      hx-trigger="click"
+                      hx-target="#slaes-report-table"
+                      hx-swap="innerHTML"
+                      >
+                      June
+                      </a>
+                     </li> 
+    
+                     <li>
+                      <a 
+                      hx-get="{% url 'sales_report_month' id=7 %}"
+                      hx-trigger="click"
+                      hx-target="#slaes-report-table"
+                      hx-swap="innerHTML"
+                      >
+                      July
+                      </a>
+                     </li> 
+    
+    
+                     <li>
+                      <a 
+                      hx-get="{% url 'sales_report_month' id=8 %}"
+                      hx-trigger="click"
+                      hx-target="#slaes-report-table"
+                      hx-swap="innerHTML"
+                      >
+                      August
+                      </a>
+                     </li> 
+    
+                     <li>
+                      <a 
+                      hx-get="{% url 'sales_report_month' id=9 %}"
+                      hx-trigger="click"
+                      hx-target="#slaes-report-table"
+                      hx-swap="innerHTML"
+                      >
+                      September
+                      </a>
+                     </li> 
+    
+                     <li>
+                      <a 
+                      hx-get="{% url 'sales_report_month' id=10 %}"
+                      hx-trigger="click"
+                      hx-target="#slaes-report-table"
+                      hx-swap="innerHTML"
+                      >
+                      October
+                      </a>
+                     </li> 
+    
+                     <li>
+                      <a 
+                      hx-get="{% url 'sales_report_month' id=11 %}"
+                      hx-trigger="click"
+                      hx-target="#slaes-report-table"
+                      hx-swap="innerHTML"
+                      >
+                      November
+                      </a>
+                     </li> 
+    
+                     <li>
+                      <a 
+                      hx-get="{% url 'sales_report_month' id=12 %}"
+                      hx-trigger="click"
+                      hx-target="#slaes-report-table"
+                      hx-swap="innerHTML"
+                      >
+                      December
+                      </a>
+                     </li> 
+    
+                    </ul>
+                  </div>
+                </div>
+              </div>
               
-            </div>
+              
+
+              
+
+             </div>
           </div>
+
+
           <div class="col-3 ml-auto">
             <button class="btn btn-md ml-auto btn-primary ml-auto mb-3" onclick="ExportToExcel('xlsx')">Export To Excel</button>
             <input type="button" class="btn btn-success btn-md  ml-auto" id="btnExport" value="Export To PDF" />
           </div>
         </div>
 
-        <div class="table-responsive pt-3">
-        <table class="table table-bordered" id="tbl_exporttable_to_xls">
-            <thead>
-              <tr>
-                <th>
-                  Product Name
-                </th>
-                <th>
-                  Item Selled
-                </th>
-                <th>
-                  In Stock
-                </th>
-
-                <th>
-                  Amounts
-                </th>
-              </tr>
-            </thead>
-            
-            {% for order in orders %}
-            <tbody>
-              <tr class="table-info">
-                <td>
-                  {{order.user_order_page__product__product_name}}
-                </td>
-                <td>
-                  {{order.dcount}}
-                </td>
-                <td>
-                    {{order.user_order_page__product__stock}}  
-                </td>
-                
-                <td>
-                  {{order.total}}
-                </td>
-              </tr>
-            </tbody>
-            {%endfor%}
-          </table>
+        <div>
+          <!-- <select id='gMonth2'>
+          <option value=''>--Select Month--</option>
+          <option value='1'>Janaury</option>
+          <option value='2'>February</option>
+          <option value='3'>March</option>
+          <option value='4'>April</option>
+          <option value='5'>May</option>
+          <option value='6'>June</option>
+          <option value='7'>July</option>
+          <option value='8'>August</option>
+          <option value='9'>September</option>
+          <option value='10'>October</option>
+          <option value='11'>November</option>
+          <option value='12'>December</option> -->
+          </select> 
         </div>
+
+        <!-- hx-get=" url 'sales_report_month' id=1 "
+                hx-trigger="click"
+                hx-target="#slaes-report-table"
+                hx-swap="innerHTML" -->
+
+        {% include 'Admin/sales-report-table.html' %}
       </div>
     </div>
 </div>
@@ -112,6 +249,12 @@
       });
   });
 </script>
+
+<script src="https://unpkg.com/htmx.org@1.8.0" integrity="sha384-cZuAZ+ZbwkNRnrKi05G/fjBX+azI9DNOkNYysZ0I/X5ZFgsmMiBXgDZof30F5ofc" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
+
 <!-- copy from here -->
 </div>
 <!-- content-wrapper ends -->
