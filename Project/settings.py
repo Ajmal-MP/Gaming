@@ -103,11 +103,12 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'myproject',
         'USER': 'myprojectuser',
-        'PASSWORD': 'password',
+        ' PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '',
     }
 }
+
 
 
 
@@ -160,7 +161,6 @@ MEDIA_ROOT = BASE_DIR/'media'
 
 #twilio
 ACCOUNT_SID = os.environ.get("ACCOUNT_SID")
-print(ACCOUNT_SID)
 AUTH_TOKEN = os.environ.get("AUTH_TOKEN")
 SERVICES_ID = os.environ.get("SERVICES_ID")
  

@@ -320,11 +320,6 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#search">
-                                        <i class="icon-magnifier"></i>
-                                    </a>
-                                </li>
-                                <li>
                                     <a href="#offcanvas-about" class="offacnvas offside-about offcanvas-toggle">
                                         <i class="icon-menu"></i>
                                     </a>
@@ -339,6 +334,59 @@
     </header>
     <!-- Start Header Area -->
 
+    <!-- Start Mobile Header -->
+    <div class="mobile-header  mobile-header-bg-color--black section-fluid d-lg-block d-xl-none">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 d-flex align-items-center justify-content-between">
+                    <!-- Start Mobile Left Side -->
+                    <div class="mobile-header-left">
+                        <ul class="mobile-menu-logo">
+                            <li>
+                                <div class="header-logo">
+                                    <div class="logo">
+                                        <a href="{% url 'home' %}"><img src="{% static 'images/logo.jpg' %}" class="rounded-circle" style="width: 70px; height: 40px;"  alt=""></a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- End Mobile Left Side -->
+
+                    <!-- Start Mobile Right Side -->
+                    <div class="mobile-right-side">
+                        <ul class="header-action-link action-color--white action-hover-color--pink">
+
+
+                            {% if user.is_authenticated %}
+                            {%else%}                           
+                                <div class="ml-auto main-menu menu-color--white menu-hover-color--pink">
+                                    
+                                    <a href="{% url 'login' %}" class="nav-item nav-link d-inline">Login</a>
+                                    <a href="{% url 'signup' %}" class="nav-item nav-link d-inline">Register</a>
+                                </div>
+                            {%endif%}
+                            
+                            <li>
+                                <a href="{% url 'cart' %}" class="offcanvas-toggle">
+                                    <i class="icon-bag"></i>
+                                    <span class="item-count">3</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#mobile-menu-offcanvas"
+                                    class="offcanvas-toggle offside-menu offside-menu-color--black">
+                                    <i class="icon-menu"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- End Mobile Right Side -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Mobile Header -->
 
     <!-- Start Offcanvas Mobile Menu Section -->
     <div id="offcanvas-about" class="offcanvas offcanvas-rightside offcanvas-mobile-about-section">
@@ -349,19 +397,122 @@
         <!-- Start Offcanvas Mobile Menu Wrapper -->
         <!-- Start Mobile contact Info -->
         <div class="mobile-contact-info">
-            <div class="logo">
-                <a href="{% url 'home' %}"><img src="{% static  'assets/images/logo/logo_white.png' %}" alt=""></a>
+            <!-- Start Mobile Menu  -->
+            <div class="mobile-menu-bottom">
+                <!-- Start Mobile Menu Nav -->
+                <div class="offcanvas-menu">
+                    <ul>
+                        <li><a href="{% url 'store' %}">Store</a></li>
+                        <li><a href="{% url 'cart' %}">Cart</a></li>
+                        {% if user.is_authenticated %}
+                        <li>
+                            <a href="#"><span>Account</span></a>
+                            <ul class="mobile-sub-menu">
+                                <li>
+                                    <a href="{% url 'account_detail' %}">Profile Information</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'logout' %}">Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                        {%endif%}
+                        
+                    </ul>
+                </div> <!-- End Mobile Menu Nav -->
+            </div> <!-- End Mobile Menu -->
+
+            <div class="mobile-contact-info">
+                <div class="logo">
+                    <a href="{% url 'home' %}"><img src="{% static 'images/logo.jpg' %}" class="rounded-circle" style="width: 70px; height: 40px;"  alt=""></a>
+                </div>
+
+                <address class="address">
+                    <span>Address: Gamers Gadgets.</span>
+                    <span>Call Us: 0123456789, 0123456789</span>
+                    <span>Email: demo@example.com</span>
+                </address>
+
+                <ul class="social-link">
+                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                </ul>
+
+                <ul class="user-link">
+                    <li><a href="{% url 'cart' %}">Cart</a></li>
+                    <li><a href="{% url 'store' %}">Store</a></li>
+                </ul>
             </div>
 
-            <ul class="user-link">
-                <li><a href="wishlist.html">Wishlist</a></li>
-                <li><a href="cart.html">Cart</a></li>
-                <li><a href="checkout.html">Checkout</a></li>
-            </ul>
+
         </div>
         <!-- End Mobile contact Info -->
     </div>
     <!-- ...:::: End Offcanvas Mobile Menu Section:::... -->
+
+        <!--  Start Offcanvas Mobile Menu Section -->
+        <div id="mobile-menu-offcanvas" class="offcanvas offcanvas-rightside offcanvas-mobile-menu-section">
+            <!-- Start Offcanvas Header -->
+            <div class="offcanvas-header text-right">
+                <button class="offcanvas-close"><i class="ion-android-close"></i></button>
+            </div> <!-- End Offcanvas Header -->
+            <!-- Start Offcanvas Mobile Menu Wrapper -->
+            <div class="offcanvas-mobile-menu-wrapper">
+                <!-- Start Mobile Menu  -->
+                <div class="mobile-menu-bottom">
+                    <!-- Start Mobile Menu Nav -->
+                    <div class="offcanvas-menu">
+                        <ul>
+                            <li><a href="{% url 'store' %}">Store</a></li>
+                            <li><a href="{% url 'cart' %}">Cart</a></li>
+                            {% if user.is_authenticated %}
+                            <li>
+                                <a href="#"><span>Account</span></a>
+                                <ul class="mobile-sub-menu">
+                                    <li>
+                                        <a href="{% url 'account_detail' %}">Profile Information</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'logout' %}">Logout</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            {%endif%}
+                            
+                        </ul>
+                    </div> <!-- End Mobile Menu Nav -->
+                </div> <!-- End Mobile Menu -->
+    
+                <!-- Start Mobile contact Info -->
+                <div class="mobile-contact-info">
+                    <div class="logo">
+                        <a href="{% url 'home' %}"><img src="{% static 'images/logo.jpg' %}" class="rounded-circle" style="width: 70px; height: 40px;"  alt=""></a>
+                    </div>
+    
+                    <address class="address">
+                        <span>Address: Gamers Gadgets.</span>
+                        <span>Call Us: 0123456789, 0123456789</span>
+                        <span>Email: demo@example.com</span>
+                    </address>
+    
+                    <ul class="social-link">
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                    </ul>
+    
+                    <ul class="user-link">
+                        <li><a href="{% url 'cart' %}">Cart</a></li>
+                        <li><a href="{% url 'store' %}">Store</a></li>
+                    </ul>
+                </div>
+                <!-- End Mobile contact Info -->
+    
+            </div> <!-- End Offcanvas Mobile Menu Wrapper -->
+        </div> <!-- ...:::: End Offcanvas Mobile Menu Section:::... -->
 
     {% block content %}
     

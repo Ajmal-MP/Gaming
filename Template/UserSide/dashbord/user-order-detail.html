@@ -12,36 +12,6 @@
                     {% include 'UserSide/dashbord/user-dashbord-base.html' %}
                     {% if orders %}
                     <div class="col-sm-12 col-md-9 col-lg-9">
-                        <!-- <div class="tab-pane" id="account-details">
-                            <h4>Orders</h4>
-                            <div class="table_page table-responsive">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Order</th>
-                                            <th>Date</th>
-                                            <th>Status</th>
-                                            <th>Total</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for order in orders %}
-                                        <tr>
-                                            <td>{{foorloop.counter}}</td>
-                                            <td>{{order.created_at}}</td>
-                                            <td><span class="success"></span></td>
-                                            <td>₹{{order.order_total}} for 1 item </td>
-                                            <td><a href="cart.html" class="view">view</a></td>
-                                        </tr>
-                                        {%endfor%}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div> -->
-
-
-
 
                         {% for order in page_obj %}   
                         <div class="card shadow mb-3" data-bs-toggle="modal"
@@ -198,7 +168,7 @@
             </div>
         </div>
 
-
+       {% if addresses %}
         <nav aria-label="Page navigation example mt-4 ml-3">
             <ul class="pagination d-flex justify-content-center">
               {% if page_obj.has_previous %}
@@ -226,6 +196,7 @@
               {%endif%}
             </ul>
           </nav>
+        {%endif%}
          <!-- ...:::: End Account Dashboard Section:::... -->
 
          {% include 'UserSide/footer.html' %}
