@@ -4,7 +4,7 @@ class Categoryform(forms.ModelForm):
 
     class Meta:
         model = Categories
-        fields = ['category_name' ,'slug','category_offer']  
+        fields = ['category_name' ,'slug']  
 
 class SubCategoryForm(forms.ModelForm):
 

@@ -99,55 +99,55 @@
                             <div class="row justify-content-start">
                                 <div class="col-12">
                               {% if order.status == 'Order Confirmed' %}
-                                    <div class="row">
+                                    <div class="row mb-2">
                                         <input type="radio" name="status" id="dreamweaver" value="Order Confirmed"  checked>
-                                        <label for="dreamweaver">Order Confirmed</label>
+                                        <label for="dreamweaver" class="ml-2 mt-2">Order Confirmed</label>
                                     </div>
-                                    <div class="row">
+                                    <div class="row mb-2">
                                         <input type="radio" name="status" id="sublime" value="Shipped">
-                                        <label for="sublime">Shipped</label>
+                                        <label for="sublime" class="ml-2 mt-2">Shipped</label>
                                     </div>
-                                    <div class="row">
+                                    <div class="row mb-2">
                                       <input type="radio" name="status" id="sublime" value="Out for delivery">
-                                      <label for="sublime">Out of delivery</label>
+                                      <label for="sublime" class="ml-2 mt-2">Out of delivery</label>
                                   </div>
-                                  <div class="row">
+                                  <div class="row mb-2">
                                     <input type="radio" name="status" id="sublime" value="Completed">
-                                    <label for="sublime">Completed</label>
+                                    <label for="sublime" class="ml-2 mt-2">Completed</label>
                                   </div>
                               {% elif order.status == 'Shipped' %}
-                                  <div class="row">
+                                  <div class="row mb-2">
                                     <input type="radio" name="status" id="dreamweaver" disabled checked>
-                                    <label for="dreamweaver">Order Confirmed</label>
+                                    <label for="dreamweaver" class="ml-2 mt-2">Order Confirmed</label>
                                 </div>
-                                <div class="row">
+                                <div class="row mb-2">
                                     <input type="radio" name="status" id="sublime" value="Shipped" checked>
-                                    <label for="sublime">Shipped</label>
+                                    <label for="sublime" class="ml-2 mt-2">Shipped</label>
                                 </div>
-                                <div class="row">
+                                <div class="row mb-2">
                                   <input type="radio" name="status" id="sublime" value="Out for delivery">
-                                  <label for="sublime">Out of delivery</label>
+                                  <label for="sublime" class="ml-2 mt-2">Out of delivery</label>
                                 </div>
-                                <div class="row">
+                                <div class="row mb-2">
                                 <input type="radio" name="status" id="sublime" value="Completed">
-                                <label for="sublime">Completed</label>
+                                <label for="sublime" class="ml-2 mt-2">Completed</label>
                                 </div>
                                 {% elif order.status == 'Out for delivery' %}
-                                        <div class="row">
+                                        <div class="row mb-2">
                                           <input type="radio" name="status" id="dreamweaver" value="Order Confirmed" disabled checked>
-                                          <label for="dreamweaver">Order Confirmed</label>
+                                          <label for="dreamweaver" class="ml-2 mt-2">Order Confirmed</label>
                                       </div>
-                                      <div class="row">
+                                      <div class="row mb-2">
                                           <input type="radio" name="status" id="sublime" value="Shipped" disabled checked>
-                                          <label for="sublime">Shipped</label>
+                                          <label for="sublime" class="ml-2 mt-2">Shipped</label>
                                       </div>
-                                      <div class="row">
+                                      <div class="row mb-2">
                                         <input type="radio" name="status" id="sublime" value="Out for delivery"  checked>
-                                        <label for="sublime">Out of delivery</label>
+                                        <label for="sublime" class="ml-2 mt-2">Out of delivery</label>
                                       </div>
-                                      <div class="row">
+                                      <div class="row mb-2">
                                       <input type="radio" name="status" id="sublime" value="Completed">
-                                      <label for="sublime">Completed</label>
+                                      <label for="sublime" class="ml-2 mt-2">Completed</label>
                                       </div>
                                   {%else%}
                                   <h1>There is some problem </h1>

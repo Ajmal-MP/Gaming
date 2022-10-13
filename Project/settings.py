@@ -164,12 +164,3 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR/'media'
 
 
-#twilio
-ACCOUNT_SID = os.environ.get("ACCOUNT_SID")
-AUTH_TOKEN = os.environ.get("AUTH_TOKEN")
-SERVICES_ID = os.environ.get("SERVICES_ID")
- 
-
-#razor pay
-RAZORPAY_KEY_ID = os.environ.get("RAZORPAY_KEY_ID")
-RAZORPAY_KEY_SECRET = os.environ.get("RAZORPAY_KEY_SECRET")

@@ -7,7 +7,7 @@ class Product(models.Model):
     slug = models.SlugField(max_length=255)
     brand = models.CharField(max_length=255)
     price = models.CharField(max_length=255)
-    product_offer = models.IntegerField()
+    product_offer = models.IntegerField(default = 0)
     product_image_1 = models.ImageField(upload_to = 'photos/product',blank = False)
     product_image_2 = models.ImageField(upload_to = 'photos/product', blank = False)
     product_image_3 = models.ImageField(upload_to = 'photos/product', blank = False)
@@ -25,7 +25,6 @@ class Product(models.Model):
     def get_url(self):
         return reverse('product_detail',args = [self.category_id.slug , self.subcategory_id.slug, self.slug ])
 
-
     def offer_price(self):
         product_offer = int(self.price) - int(self.price) * int(self.product_offer) /100 
         category_offer = int(self.price) - int(self.price) * int(self.category_id.category_offer)/100
@@ -35,4 +34,13 @@ class Product(models.Model):
             return product_offer
         else:
             return category_offer
-        
+
+    def sub(self,request):
+        product_offer = int(self.price) - int(self.price) * int(self.product_offer) /100 
+        category_offer = int(self.price) - int(self.price) * int(self.category_id.category_offer)/100
+        if product_offer == int(self.price) and category_offer == int(self.price):
+            return self.price
+        if product_offer <= category_offer:
+            return product_offer
+        else:
+            return category_offer

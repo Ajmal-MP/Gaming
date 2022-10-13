@@ -7,5 +7,7 @@ urlpatterns = [
     path("user_block/<int:id>/<int:flag>",user_block,name='user_block'),
     path("sales_report",sales_report,name='sales_report'),
     path("dashbord",dashbord,name='dashbord'),
-    path("sales_report_month/<int:id>",sales_report_month,name='sales_report_month')
+    path("sales_report_month/<int:id>",sales_report_month,name='sales_report_month'),
+    path("sales_report_year/<int:id>",sales_report_year,name='sales_report_year')
+
 ]

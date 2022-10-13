@@ -4,14 +4,19 @@
 {% block content %}
 
 <div class="container" style="margin-top: 50px;">
-    <center><i class="fas fa-check-circle" style="font-size: 72px;margin-bottom: 20px;color: #28A745;"></i></center>
-    <h2 class="text-center">Payment Successful</h2>
+    <h2 class="text-center">Download Invoice</h2>
 	<br>
-	<div class="text-center">
-		<a href="{% url 'store' %}" class="btn btn-success">Shop more</a>
-	</div>
+
 </div>
 
+<div class="d-flex justify-content-center">
+    <div class="">
+        <input type="button" class="btn btn-primary btn-sm" id="btnExport" value="Download Invoice" />
+    </div>
+    <div class="ml-4">
+        <a href="{% url 'home' %}" class="btn btn-success btn-sm px-5">Home</a>
+    </div>
+</div>
 
 
 <div class="container" style="margin: 0 auto;width: 50%;padding: 50px;background: #f1f1f1;margin-top: 50px;margin-bottom: 50px;" id="invoice">
@@ -25,6 +30,15 @@
                         <!-- Start .row -->
                         <div class="col-lg-6">
                             <!-- col-lg-6 start here -->
+                            <div class="invoice-details mt25">
+                                <div class="well">
+                                    <ul class="list-unstyled mb0">
+                                        <li><strong>Order</strong> #{{order_number}}</li>
+                                        <li><strong>Order Date:</strong> {{order.created_at}}</li>
+                                        <li><strong>Status:</strong> {{payment.status}}</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                         <!-- col-lg-6 end here -->
                         <div class="col-lg-6">
@@ -40,19 +54,8 @@
                             </div>
                         </div>
                         <!-- col-lg-6 end here -->
-                        <div class="col-lg-12">
+                        <div class="col-lg-12 mt-5 mb-5">
                             <!-- col-lg-12 start here -->
-                            <div class="invoice-details mt25">
-                                <div class="well">
-                                    <ul class="list-unstyled mb0">
-                                        <li><strong>Order</strong> #{{order_number}}</li>
-                                        <li><strong>Transaction ID</strong> {{transID}}</li>
-                                        <li><strong>Order Date:</strong> {{order.created_at}}</li>
-                                        <li><strong>Status:</strong> {{payment.status}}</li>
-                                    </ul>
-                                </div>
-                            </div>
-
                             <div class="invoice-items">
                                 <div class="table-responsive" style="overflow: hidden; outline: none;" tabindex="0">
                                     <table class="table table-bordered bordered-primary" style="border:1px solid black">
@@ -64,21 +67,14 @@
                                             </tr>
                                         </thead>
                                         <tbody >
-                                          {% for item in ordered_products %}
+                                            {% for item in ordered_products %}
                                             <tr >
                                                 <td style="border:1px solid black" >{{item.product.product_name}}
-                                                  <p class="text-muted small">
-                                          					{% if item.variations.all %}
-                                          						{% for i in item.variations.all %}
-                                          							{{ i.variation_category | capfirst }} : {{ i.variation_value | capfirst }} <br>
-                                          						{% endfor %}
-                                          					{% endif %}
-                                          				</p>
                                                 </td>
                                                 <td class="text-center" style="border:1px solid black">{{item.quantity}}</td>
-                                                <td class="text-center" style="border:1px solid black">₹{{item.product_price}} </td>
+                                                <td class="text-center" style="border:1px solid black">₹{{item.product.offer_price}} </td>
                                             </tr>
-                                          {% endfor %}
+                                            {% endfor %}
                                         </tbody>
                                         <tfoot>
                                             <tr>
@@ -86,7 +82,7 @@
                                                 <th class="text-center">₹{{subtotal}} </th>
                                             </tr>
                                             <tr>
-                                                <th colspan="2" class="text-right">Tax:</th>
+                                                <th colspan="2" class="text-right">Delivery Charge:</th>
                                                 <th class="text-center">₹{{order.delivery_charge}} </th>
                                             </tr>
 
@@ -112,6 +108,10 @@
         <!-- col-lg-12 end here -->
     </div>
 </div>
+
+<div style="height:100px;"></div>
+
+
 
 
      <!-- ::::::::::::::All JS Files here :::::::::::::: -->
@@ -143,7 +143,12 @@
     <script src="{% static 'assets/js/main.js' %}"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 
-
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <!-- script for for pdf creation -->
+    <!-- Main JS -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
     <script type="text/javascript">
         $("body").on("click", "#btnExport", function () {
             html2canvas($('#invoice')[0], {

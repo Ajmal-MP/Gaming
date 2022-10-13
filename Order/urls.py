@@ -17,4 +17,6 @@ urlpatterns = [
  path('admin_display_coupon',admin_display_coupon,name='admin_display_coupon'),
  path("coupon_delete/<int:id>",coupon_delete,name='coupon_delete'),
  path("coupon_update/<int:id>",coupon_update,name='coupon_update'),
+ path("invoice-download/<int:id>",invoice_download,name='invoice-download'),
+
 ]

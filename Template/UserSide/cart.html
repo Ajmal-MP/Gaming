@@ -59,6 +59,7 @@
                                                         </div>
                                                         {%endif%}
                                                         <input type="text" class="text-center d-inline-block" style="width:80px; height:35px" value="{{ cart_item.quantity }}" disabled >
+                                                        {% if cart_item.quantity < cart_item.product.stock %}
                                                         <div class="input-group-append">
                                                             <a 
                                                                 hx-get="{% url 'add_cart' cart_item.product.id %}"
@@ -69,20 +70,23 @@
                                                                 <i class="fa fa-plus btn btn-primary" style="height:34px"></i>
                                                             </a>
                                                         </div>
+                                                        {%else%}
+                                                        <div class="input-group-append">
+                                                            <a>
+                                                                <i class="fa fa-plus btn btn-light" style="height:34px"></i>
+                                                            </a>
+                                                        </div>
+                                                        {%endif%}
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="product_total">₹{{cart_item.sub_total}}</td>
                                             <td class="product_remove">
-                                            <a
-                                                hx-get="{% url 'remove_cart_items' cart_item.product.id %}"
-                                                hx-trigger="click"
-                                                hx-target="#total-count"
-                                                hx-swap="innerHTML"
-                                                class="btn btn-light"
-                                                >
-                                                <i class="fa fa-trash-o"></i>
-                                            </a>
+                                                <i class="fa fa-trash-o" 
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#cancelOrder{{cart_item.product.id}}"
+                                                ></i>
+                                            </td>
                                         </tr> 
                                         <!-- End Cart Single Item-->
                                     </tbody>
@@ -94,6 +98,36 @@
                 </div>
             </div>
         </div> <!-- End Cart Table -->
+
+        {% for cart_item in cart_items %}
+        <!-- delete model -->
+        <div class="modal fade" id="cancelOrder{{cart_item.product.id}}" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog  modal-dialog-centered modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                                <div class="row text-center">
+                                    <div class="col-12 mt-2">
+                                        <h4 class="mb-3">Are you sure you want to remove this product?</h4>
+                                    </div>
+                                    <div class="col-12 my-5 mx-auto">
+                                        <a 
+                                        href="{% url 'remove_cart_items' cart_item.product.id %}"
+                                        class="btn btn-danger text-danger py-2 px-5 px-5">Cancel Order</a>
+                                        <a href="" class="btn btn-primary py-2 px-5 px-5 ml-3" aria-label="Close" data-bs-dismiss="modal">NO</a>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- delete model --> 
+        {%endfor%}
+
+
+
+
+
 
         <!-- Start Coupon Start -->
         <div class="coupon_area">

@@ -81,9 +81,16 @@ def sales_report(request):
         month = today.month
         orders = Order.objects.filter(created_at__year = year,created_at__month=month,payment__status = True).values('user_order_page__product__product_name','user_order_page__product__stock',total = Sum('order_total'),).annotate(dcount=Sum('user_order_page__quantity')).order_by()
     today_date=str(date.today())
+    year = today.year
+    years = []
+    for i in range (10):
+        val = year-i
+        years.append(val)
+
     context = {
         'orders':orders,
-        'today_date':today_date
+        'today_date':today_date,
+        'years':years
     }
     return render(request,'Admin/sales-report.html',context)  
 
@@ -91,6 +98,18 @@ def sales_report(request):
 def sales_report_month(request,id):
     orders = Order.objects.filter(created_at__month = id,payment__status = True).values('user_order_page__product__product_name','user_order_page__product__stock',total = Sum('order_total'),).annotate(dcount=Sum('user_order_page__quantity')).order_by()    
     print(orders)
+    today_date=str(date.today())
+    context = {
+        'orders':orders,
+        'today_date':today_date
+    }
+    return render(request,'Admin/sales-report-table.html',context) 
+
+
+
+@staff_member_required(login_url='admin_login')
+def sales_report_year(request,id):
+    orders = Order.objects.filter(created_at__year = id,payment__status = True).values('user_order_page__product__product_name','user_order_page__product__stock',total = Sum('order_total'),).annotate(dcount=Sum('user_order_page__quantity')).order_by()    
     today_date=str(date.today())
     context = {
         'orders':orders,

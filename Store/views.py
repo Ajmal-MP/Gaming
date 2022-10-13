@@ -103,8 +103,14 @@ def product_details(request,cat_slug,sub_cat_slug,product_slug):
 
 def brand_filtered(request,brand):
     product = Product.objects.filter(brand = brand,is_active = True)
+    paginator = Paginator(product, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    product_count = product.count()
     context={
-        'products':product
+        'product':product,
+        'page_obj':page_obj,
+        'product_count':product_count,
     }
     return render(request,'UserSide/store.html',context)
 
