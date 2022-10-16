@@ -40,7 +40,7 @@
                                             data-bs-toggle="modal"
                                             data-bs-target="#modalAddcart{{order.id}}"
                                             >
-                                                <img src="{% static 'images/eye.svg' %}" width="40px" height="40px" alt="View" class="text-primay">
+                                            <i class="fa fa-eye fa-lg" aria-hidden="true"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -95,7 +95,10 @@
                                                             data-bs-target="#return_order{{order.id}}">Return Order</button>
                                                             {%endif%}
                                                             <div  class="btn btn-primary mt-3 ml-2">
-                                                            <a href="{% url 'invoice-download' order.id %}" class="btn btn-primary">Invoice</a>
+                                                            <form action="{% url 'invoice-download' order.id %}" method="POST">
+                                                                {% csrf_token %}
+                                                                <button class="btn btn-primary" type="submit">Invoice</button>
+                                                            </form>
                                                             </div>
                                                         </div>
                                                     </div>

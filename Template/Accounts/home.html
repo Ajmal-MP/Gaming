@@ -110,9 +110,11 @@
                                                 <img src="{{product.product_image_1.url}}" alt="">
                                                 <img src="{{product.product_image_2.url}}" alt="">
                                             </a>
+                                            {% if product.product_offer > 0 %}
                                             <div class="tag">
-                                                <span>sale</span>
+                                                <span>{{product.product_offer}}%</span>
                                             </div>
+                                            {%endif%}
                                             <div class="action-link">
                                                 {% if product.stock <= 0 %}
                                                 <div class="action-link-left">

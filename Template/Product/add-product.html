@@ -88,37 +88,15 @@
       <button class="btn btn-primary mt-3  not-visible" id="confirm-btn">confirm</button>
   </div>
   <!-- content-wrapper ends -->
+  <div id="infoContainer"></div>
+  <div id="cropContainer"></div>
+  <button class="resize-done">Done</button>
 </div>
 <!-- main-panel ends -->
 
 
 
 
-<div class="modal fade" id="modalCrop">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h4 class="modal-title">Crop Image</h4>
-              <button type="button" class="close" data-dismiss="modal" id="dismissed">×</button>
-          </div>
-          <div class="modal-body">
-              <img src="" id="image" style="max-width: 100%;">
-          </div>
-          <div class="modal-footer">
-              <div class="btn-group pull-left" role="group">
-                  <button type="button" class="btn btn-default js-zoom-in">
-                      <span class="glyphicon glyphicon-zoom-in"></span>
-                  </button>
-                  <button type="button" class="btn btn-default js-zoom-out">
-                      <span class="glyphicon glyphicon-zoom-out"></span>
-                  </button>
-              </div>
-              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary js-crop-and-upload">Crop and upload</button>
-          </div>
-      </div>
-  </div>
-</div>
 
 
 
@@ -203,6 +181,47 @@
 })
 
 
+</script>
+
+
+
+
+
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/cropimage.js' %}"></script>
+<script>
+  $('#cropContainer').cropimage({
+  image:"{% static 'images/logo.jpg' %}",
+  btnDoneAttr:'.resize-done'
+});
+
+$('#cropContainer').resizeImage({
+  image:"{% static 'images/logo.jpg' %}",
+  btnDoneAttr: '.resize-done'
+}, function( imgResized ){
+  $('#infoContainer').html( '<img src="'+ imgResized +'">' )
+})
+
+$('#cropContainer').resizeImage({
+
+// Formats: 3/2, 200x360, auto
+imgFormat: 'auto', 
+
+// lg-md, sm-xs
+device: 'all', 
+
+// true => circle, square ( by default )
+circleCrop: false, 
+
+// image zoom options
+zoomable: true,
+zoomMax: 2,
+
+// black, white
+outBoundColor: 'black'
+
+})
 </script>
 </body>
 <!-- page-body-wrapper ends -->

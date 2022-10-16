@@ -413,25 +413,27 @@ def coupon_update(request, id) :
     return render(request, 'Admin/admin-add-coupon.html', context)  
 
 def invoice_download(request,id):
-    print(id)
     try:
-        order = Order.objects.get(user = request.user,id = id)
-        ordered_products = OrderProduct.objects.filter(order_id=order.id)
+        if request.method == 'POST':
+            order = Order.objects.get(user = request.user,id = id)
+            ordered_products = OrderProduct.objects.filter(order_id=order.id)
 
-        subtotal = 0
-        for i in ordered_products:
-            subtotal += i.product.sub(request) * i.quantity
+            subtotal = 0
+            for i in ordered_products:
+                subtotal += i.product.sub(request) * i.quantity
 
-        payment = Payment.objects.get(order_number=order.order_number)
+            payment = Payment.objects.get(order_number=order.order_number)
 
-        context = {
-            'order': order,
-            'ordered_products': ordered_products,
-            'order_number': order.order_number,
-            'transID': payment.payment_id,
-            'payment': payment,
-            'subtotal': subtotal,
-        }
-        return render(request, 'UserSide/invoice-download.html', context)
-    except (Payment.DoesNotExist, Order.DoesNotExist):
+            context = {
+                'order': order,
+                'ordered_products': ordered_products,
+                'order_number': order.order_number,
+                'transID': payment.payment_id,
+                'payment': payment,
+                'subtotal': subtotal,
+            }
+            return render(request, 'UserSide/invoice-download.html', context)
+        else:
+            return redirect('home')
+    except:
         return redirect('home')

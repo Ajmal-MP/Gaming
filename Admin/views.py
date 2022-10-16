@@ -69,6 +69,12 @@ def user_block(request,id,flag):
 
 @staff_member_required(login_url='admin_login')
 def sales_report(request):
+    year = datetime.now().year
+    today = datetime.today()
+    month = today.month
+    years = []
+    today_date=str(date.today())
+
     if request.method == 'POST':
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
@@ -76,13 +82,8 @@ def sales_report(request):
         end_date = val+timedelta(days=1)
         orders = Order.objects.filter(Q(created_at__lt=end_date),Q(created_at__gte=start_date),payment__status = True).values('user_order_page__product__product_name','user_order_page__product__stock',total = Sum('order_total'),).annotate(dcount=Sum('user_order_page__quantity')).order_by()
     else:
-        today = datetime.today()
-        year = datetime.now().year
-        month = today.month
         orders = Order.objects.filter(created_at__year = year,created_at__month=month,payment__status = True).values('user_order_page__product__product_name','user_order_page__product__stock',total = Sum('order_total'),).annotate(dcount=Sum('user_order_page__quantity')).order_by()
-    today_date=str(date.today())
     year = today.year
-    years = []
     for i in range (10):
         val = year-i
         years.append(val)
