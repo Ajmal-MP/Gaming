@@ -161,7 +161,6 @@ def checkout(request,total=0, quantity=0, cart_items=None):
 
 def checkout_address(request,id):
     address = Address.objects.get(id=id)
-    print(address.first_name)
     context={
         'detail':address,
     }
